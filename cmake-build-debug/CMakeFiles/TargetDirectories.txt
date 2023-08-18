@@ -1,3 +1,0 @@
-C:/Users/flans/Desktop/project/GrammarParser/cmake-build-debug/CMakeFiles/untitled.dir
-C:/Users/flans/Desktop/project/GrammarParser/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/flans/Desktop/project/GrammarParser/cmake-build-debug/CMakeFiles/rebuild_cache.dir
