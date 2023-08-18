@@ -32,7 +32,6 @@
 *.app
 
 #self added
-cmake-build-debug/
+/cmake-build-debug/
 .gitignore
-.idea/
-```
+/.idea/
