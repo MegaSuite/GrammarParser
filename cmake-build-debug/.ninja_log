@@ -1,0 +1,8 @@
+# ninja log v5
+3	200	7140642852084805	CMakeFiles/untitled.dir/main.cpp.obj	717a5ac18f600bd
+7	314	7140627408729000	CMakeFiles/untitled.dir/parser.cpp.obj	8347add04f6d9dd6
+9	124	7140595227430987	CMakeFiles/untitled.dir/preprocess.cpp.obj	c15dbf367a147b34
+12	121	7140521463359766	CMakeFiles/untitled.dir/lexer.cpp.obj	190d91a21803f1d4
+229	444	7140651002626292	untitled.exe	7d7747b246fd5203
+4	228	7140651000528825	CMakeFiles/untitled.dir/printfile.cpp.obj	aeb89353ce662a29
+12	354	7140627409119490	CMakeFiles/untitled.dir/profuction.cpp.obj	b174fef304d252d
