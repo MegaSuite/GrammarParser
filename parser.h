@@ -2,7 +2,7 @@
 
 #include<queue>
 #include<stack>
-#include"lexer.h"
+#include"tokens_define.h"
 #include"profuction.h"
 using namespace std;
 #define OK 1
@@ -16,7 +16,7 @@ struct print
 typedef int status;
 extern int indent0;					//记录源代码的缩进值
 extern queue<print> printList;		//存储各个打印格式单元
-extern int w;						//获得gettoken函数的返回值即读入的单词种类编码
+extern int w;						//获得GetToken函数的返回值即读入的单词种类编码
 extern char kind[100];			    //存取类型关键字
 extern char tokenText0[100];		//存取变量名或函数名
 

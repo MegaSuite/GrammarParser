@@ -1,6 +1,6 @@
 #include"parser.h"
 
-int w;  //获得gettoken函数的返回值即读入的单词种类编码
+int w;  //获得GetToken函数的返回值即读入的单词种类编码
 char kind[100]; //储存类型关键字
 char tokenText0[100]; //储存第一个函数名或者变量名
 int indent0 = 0;  //初始化缩进值
@@ -11,7 +11,7 @@ status program(FILE* fp, CTree& T)  //语法单位<程序>的子程序
 	CTree c;
 	struct print elem = { indent0,line_num };
 	printList.push(elem);//存入程序的缩进值
-	w = gettoken(fp);
+	w = GetToken(fp);
 	if (!ExtDefList(fp, c)) return ERROR;  //调用外部定义序列函数
 	T.n = 1; T.r = 0;
 	T.nodes[0].data = (char*)malloc((strlen("程序") + 1) * sizeof(char)); //定义语法树的根结点nodes[0]
@@ -46,10 +46,10 @@ status ExtDef(FILE* fp, CTree& T)  //语法单位<外部定义>的子程序
 	if (w != INT && w != LONG && w != SHORT && w != SIGNED && w != UNSIGNED &&
 		w != FLOAT && w != DOUBLE && w != CHAR &&w!=VOID) return ERROR;
 	strcpy(kind, token_text);			//保存类型关键字
-	w = gettoken(fp);
+	w = GetToken(fp);
 	if (w != IDENT) return ERROR;
 	strcpy(tokenText0, token_text);		//保存第一个变量名或函数名到tokenText0
-	w = gettoken(fp);
+	w = GetToken(fp);
 	if (w != LS) flag = ExtVarDef(fp, T);	//调用外部变量定义子程序
 	else flag = funcDef(fp, T);			//调用函数定义子程序
 	if (!flag) return ERROR;
@@ -87,10 +87,10 @@ status VarList(FILE* fp, CTree& T)  //语法单位<变量序列>子程序
 	if (w == LM)     //区分是数组变量还是变量
 	{
 		strcat(tokenText0, "[");  //识别数组，只支持一维数组
-		if ((w = gettoken(fp)) == INT_CONST)
+		if ((w = GetToken(fp)) == INT_CONST)
 		{
 			strcat(tokenText0, token_text);
-			if ((w = gettoken(fp)) == RM)
+			if ((w = GetToken(fp)) == RM)
 			{
 				strcat(tokenText0, "]");  //识别数组成功
 				c.n = 1; c.r = 0;   //创建数组结点
@@ -99,7 +99,7 @@ status VarList(FILE* fp, CTree& T)  //语法单位<变量序列>子程序
 				strcat(c.nodes[0].data, tokenText0); // 初始时，tokenText0保存了第一个变量名
 				c.nodes[0].indent = 1;
 				c.nodes[0].firstchild = NULL;
-				w = gettoken(fp);
+				w = GetToken(fp);
 			}
 			else return ERROR;
 		}
@@ -118,13 +118,13 @@ status VarList(FILE* fp, CTree& T)  //语法单位<变量序列>子程序
 	if (w != COMMA && w != SEMI) return ERROR;
 	if (w == SEMI)								//如果标识符后是分号，直接结束
 	{
-		w = gettoken(fp);
+		w = GetToken(fp);
 		return OK;
 	}
-	w = gettoken(fp);
+	w = GetToken(fp);
 	if (w != IDENT) return ERROR;	//如果w不是标识符则报错，反之后面还有第二个变量
 	strcpy(tokenText0, token_text);
-	w = gettoken(fp);
+	w = GetToken(fp);
 	if (!VarList(fp, t)) return ERROR;
 	if (!InsertChild(T, T.r, 2, t)) return ERROR;
 	return OK;
@@ -146,7 +146,7 @@ status funcDef(FILE* fp, CTree& T)  //语法单位<函数定义>子程序
 	c.nodes[0].indent = 1;
 	c.nodes[0].firstchild = NULL;
 	if (!InsertChild(T, T.r, 1, c)) return ERROR;
-	w = gettoken(fp);
+	w = GetToken(fp);
 	//函数括号内可能无参数，可能是void，可能是参数序列，其他情况报错
 	if (w != RS && w != VOID && w != INT && w != LONG && w != SHORT && w != SIGNED && w != UNSIGNED && w != FLOAT && w != DOUBLE && w != CHAR)
 		return ERROR;
@@ -160,7 +160,7 @@ status funcDef(FILE* fp, CTree& T)  //语法单位<函数定义>子程序
 	{
 		if (w == VOID)
 		{
-			w = gettoken(fp);
+			w = GetToken(fp);
 			if (w != RS) return ERROR;
 		}
 	}
@@ -170,7 +170,7 @@ status funcDef(FILE* fp, CTree& T)  //语法单位<函数定义>子程序
 		if (!InsertChild(p, p.r, 1, q)) return ERROR;
 	}
 	if (!InsertChild(T, T.r, 2, p)) return ERROR;
-	w = gettoken(fp);
+	w = GetToken(fp);
 	if (w != SEMI && w != LL) return ERROR;
 	f.n = 1; f.r = 0;  //生成函数体结点
 	f.nodes[0].data = (char*)malloc((strlen("函数体：") + 1) * sizeof(char));
@@ -198,11 +198,11 @@ status ParameList(FILE* fp, CTree& T)  //语法单位<形参序列>子程序
 	T.nodes[0].firstchild = NULL;
 	if (!FormParDef(fp, c)) return ERROR;
 	if (!InsertChild(T, T.r, 1, c)) return ERROR;
-	w = gettoken(fp);
+	w = GetToken(fp);
 	if (w != RS && w != COMMA) return ERROR;
 	if (w == COMMA)
 	{
-		w = gettoken(fp);
+		w = GetToken(fp);
 		if (!ParameList(fp, p)) return ERROR;
 		InsertChild(T, T.r, 2, p);
 	}
@@ -228,7 +228,7 @@ status FormParDef(FILE* fp, CTree& T)  //语法单位<形参>子程序
 	c.nodes[0].indent = 1;
 	c.nodes[0].firstchild = NULL;
 	InsertChild(T, T.r, 1, c);
-	w = gettoken(fp);
+	w = GetToken(fp);
 	if (w != IDENT) return ERROR;
 	p.n = 1; p.r = 0;   //生成形参变量结点
 	p.nodes[0].data = (char*)malloc((strlen(token_text) + strlen("ID: ") + 1) * sizeof(char));
@@ -251,7 +251,7 @@ status CompStat(FILE* fp, CTree& T)  //语法单位<复合语句>子程序
 	T.nodes[0].indent = 1;
 	T.nodes[0].firstchild = NULL;
 	//注意其中局部变量说明和语句序列都可以为空
-	w = gettoken(fp);
+	w = GetToken(fp);
 	elem = { ++indent0,line_num };
 	printList.push(elem);  //添加缩进值
 	if (w == INT || w == LONG || w == SHORT || w == SIGNED || w == UNSIGNED|| w == FLOAT || w == DOUBLE || w == CHAR)
@@ -273,7 +273,7 @@ status CompStat(FILE* fp, CTree& T)  //语法单位<复合语句>子程序
 	elem = { --indent0,line_num };
 	printList.push(elem);
 	if (w != RL) return ERROR;
-	w = gettoken(fp);
+	w = GetToken(fp);
 	return OK;
 }
 
@@ -314,10 +314,10 @@ status LocVarDef(FILE* fp, CTree& T)//语法单位<局部变量定义>子程序
 	c.nodes[0].indent = 1;
 	c.nodes[0].firstchild = NULL;
 	if (!InsertChild(T, T.r, 1, c)) return ERROR;
-	w = gettoken(fp);
+	w = GetToken(fp);
 	if (w != IDENT) return ERROR;
 	strcpy(tokenText0, token_text);
-	w = gettoken(fp);
+	w = GetToken(fp);
 	if (!VarList(fp, p)) return ERROR;
 	if (!InsertChild(T, T.r, 2, p)) return ERROR;
 	return OK;
@@ -353,9 +353,9 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 	print elem;
 	
 	if (w == IF) {//分析条件语句,p用于生成表达式树,q用于生成if模块子句数，k用于生成else模块子句数
-		w = gettoken(fp);
+		w = GetToken(fp);
 		if (w != LS) return ERROR;
-		w = gettoken(fp);
+		w = GetToken(fp);
 		if (w == RS) return ERROR;
 		if (!exp(fp, p, RS)) return ERROR;
 		c.n = 1; c.r = 0;  //生成if语句子树
@@ -364,7 +364,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		c.nodes[0].indent = 1;
 		c.nodes[0].firstchild = NULL;
 		InsertChild(c, c.r, 1, p);
-		w = gettoken(fp);
+		w = GetToken(fp);
 		if (w == LL)
 		{
 			if (!CompStat(fp, q)) return ERROR;
@@ -385,7 +385,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		InsertChild(p, p.r, 1, q);
 		if (w == ELSE)
 		{
-			w = gettoken(fp);
+			w = GetToken(fp);
 			if (w == LL)
 			{
 				if (!CompStat(fp, k)) return ERROR;
@@ -460,19 +460,19 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		c.nodes[0].indent = 1;
 		c.nodes[0].firstchild = NULL;
 		InsertChild(T, T.r, 4, c);
-		w = gettoken(fp);
+		w = GetToken(fp);
 		if (w != LS) return ERROR;
-		w = gettoken(fp);
+		w = GetToken(fp);
 		if (!exp(fp, c, SEMI)) return ERROR;
 		InsertChild(T, T.nodes[0].firstchild->child, 1, c);
-		w = gettoken(fp);
+		w = GetToken(fp);
 		if (w == SEMI) return ERROR;
 		if (!exp(fp, c, SEMI)) return ERROR;
 		InsertChild(T, T.nodes[0].firstchild->next->child, 1, c);
-		w = gettoken(fp);
+		w = GetToken(fp);
 		if (!exp(fp, c, RS)) return ERROR;
 		InsertChild(T, T.nodes[0].firstchild->next->next->child, 1, c);
-		w = gettoken(fp);
+		w = GetToken(fp);
 		if (w == LL)
 		{
 			if (!CompStat(fp, c)) return ERROR;
@@ -489,12 +489,12 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		return OK;
 	}
 	else if (w == WHILE) {
-		w = gettoken(fp);
+		w = GetToken(fp);
 		if (w != LS) return ERROR;
-		w = gettoken(fp);
+		w = GetToken(fp);
 		if (w == RS) return ERROR;
 		if (!exp(fp, c, RS)) return ERROR;
-		w = gettoken(fp);
+		w = GetToken(fp);
 		if (w == LL)
 		{
 			if (!CompStat(fp, p)) return ERROR;
@@ -522,9 +522,9 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		strcpy(T.nodes[0].data, "continue语句：");
 		T.nodes[0].indent = 1;
 		T.nodes[0].firstchild = NULL;
-		w = gettoken(fp);
+		w = GetToken(fp);
 		if (w != SEMI) return ERROR;
-		w = gettoken(fp);
+		w = GetToken(fp);
 		return OK;
 	}
 	else if (w == BREAK) {
@@ -533,9 +533,9 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		strcpy(T.nodes[0].data, "break语句：");
 		T.nodes[0].indent = 1;
 		T.nodes[0].firstchild = NULL;
-		w = gettoken(fp);
+		w = GetToken(fp);
 		if (w != SEMI) return ERROR;
-		w = gettoken(fp);
+		w = GetToken(fp);
 		return OK;
 	}
 	else if (w == RETURN) {
@@ -544,21 +544,21 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		strcpy(T.nodes[0].data, "return语句：");
 		T.nodes[0].indent = 1;
 		T.nodes[0].firstchild = NULL;
-		w = gettoken(fp);
+		w = GetToken(fp);
 		if (w == SEMI) return ERROR;
 		if (!exp(fp, c, SEMI)) return ERROR;
-		w = gettoken(fp);
+		w = GetToken(fp);
 		InsertChild(T, T.r, 1, c);
 		return OK;
 	}
 	else if (w == LS) {
 		if (!exp(fp, T, RS)) return ERROR;
-		w = gettoken(fp);
+		w = GetToken(fp);
 		return OK;
 	}
 	else if (w == IDENT || w == INT_CONST || w == UNSIGNED_CONST || w == LONG_CONST || w == UNSIGNED_LONG_CONST || w == DOUBLE_CONST || w == FLOAT_CONST || w == LONG_DOUBLE_CONST || w == CHAR_CONST) {
 		if (!exp(fp, T, SEMI)) return ERROR;
-		w = gettoken(fp);
+		w = GetToken(fp);
 		return OK;
 	}
 	else if (w == RL) {
@@ -570,7 +570,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		strcpy(T.nodes[0].data, "空语句");
 		T.nodes[0].indent = 1;
 		T.nodes[0].firstchild = NULL;
-		w = gettoken(fp);
+		w = GetToken(fp);
 		return OK;
 	}
 	else return ERROR;
@@ -610,7 +610,7 @@ status exp(FILE* fp, CTree& T, int endsym)//语法单位<表达式>子程序
 			node->nodes[0].indent = 1;
 			node->nodes[0].firstchild = NULL;
 			Push(opn, node);			//根据w生成一个结点，结点指针进栈opn
-			w = gettoken(fp);
+			w = GetToken(fp);
 		}
 		else if (w == PLUS || w == MINUS || w == MULTIPLY || w == DIVIDE ||
 			w == MOD || w == LS || w == RS || ((w>=MORE)&&(w<= LESS_EQUAL)) || w == EQUAL_TO ||
@@ -629,11 +629,11 @@ status exp(FILE* fp, CTree& T, int endsym)//语法单位<表达式>子程序
 				node->nodes[0].firstchild = NULL;
 				node->n = 1; node->r = 0;
 				Push(op, node);		//根据w生成一个结点，结点指针进栈opn
-				w = gettoken(fp);
+				w = GetToken(fp);
 				break;
 			case '=':
 				if (!Pop(op, node)) error++;
-				w = gettoken(fp);
+				w = GetToken(fp);
 				break;   //去括号
 			case '>':
 				if (!Pop(opn, child2)) error++;

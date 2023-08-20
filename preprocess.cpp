@@ -1,12 +1,12 @@
 #include"preprocess.h"
-#include"lexer.h"
+#include"tokens_define.h"
 
 define_data data_Def[10];//用于储存define宏定义的内容，全局
 include_data data_Include[10];//用于储存include文件包含的内容，全局
 int data_Def_num;//宏定义个数
 
 status pre_process(FILE* fp) {
-	int w; //接受gettoken读取的返回值
+	int w; //接受GetToken读取的返回值
 	int i=0,j=0,m;//i是宏定义个数，j是include个数
 	int pre_line_num=1;//用于记录换行情况
 	char container;//暂时存储字符判断结尾处的分号
@@ -16,12 +16,12 @@ status pre_process(FILE* fp) {
 	char filename[50];
 	strcpy(filename, "C_mid_file.txt"); //中间文件
 	mid_fp = fopen(filename, "w");
-	w = gettoken(fp);
+	w = GetToken(fp);
 	do {
 		if (w == POUND) {
-			w = gettoken(fp);
+			w = GetToken(fp);
 			if (w == DEFINE) {
-				w = gettoken(fp);
+				w = GetToken(fp);
 				a = line_num;
 				if (w == ERROR_TOKEN)return ERROR;
 				else if (w == SEMI)return ERROR;
@@ -29,7 +29,7 @@ status pre_process(FILE* fp) {
 				else {
 					strcpy(data_Def[i].ident, token_text);
 				}
-				w = gettoken(fp);
+				w = GetToken(fp);
 				b = line_num;
 				if (w == ERROR_TOKEN)return ERROR;
 				else if (w == SEMI)return ERROR;
@@ -40,28 +40,28 @@ status pre_process(FILE* fp) {
 				if (a != b)return ERROR;
 				data_Def_num = i;
 				fprintf(mid_fp, "\n");
-				w = gettoken(fp); 
+				w = GetToken(fp);
 				pre_line_num = line_num;
 				continue;
 			}
 			else if (w == INCLUDE) {
-				w = gettoken(fp);
+				w = GetToken(fp);
 				if (w == ERROR_TOKEN) return ERROR;
 				else if(w== STRING_CONST){ 
 					strcpy(data_Include[j++].string, token_text);
-					if ((container = fgetc(fp)) != ';') { ungetc(container, fp); fprintf(mid_fp, "\n"); w = gettoken(fp); pre_line_num = line_num; continue; }
+					if ((container = fgetc(fp)) != ';') { ungetc(container, fp); fprintf(mid_fp, "\n"); w = GetToken(fp); pre_line_num = line_num; continue; }
 					else return ERROR;
 				}
 				else if (w == LESS) {
-					w = gettoken(fp);
+					w = GetToken(fp);
 					a = line_num;
 					if (w != IDENT)return ERROR;
 					else {
-						w = gettoken(fp);
+						w = GetToken(fp);
 						b = line_num;
 						if (w != MORE)return ERROR;
 						if (a != b)return ERROR;
-						if ((container = fgetc(fp)) != ';') { ungetc(container, fp); fprintf(mid_fp, "\n"); w = gettoken(fp); pre_line_num = line_num; continue; }
+						if ((container = fgetc(fp)) != ';') { ungetc(container, fp); fprintf(mid_fp, "\n"); w = GetToken(fp); pre_line_num = line_num; continue; }
 						else return ERROR;
 					}
 				}
@@ -94,14 +94,14 @@ status pre_process(FILE* fp) {
 			}
 			else if (w == LINENOTE) {
 				pre_line_num = line_num;
-				w = gettoken(fp); 
+				w = GetToken(fp);
 				continue;
 			}
 			else if (w == BLOCKNOTE) {
 			
 				for(m=0;m<line_num-pre_line_num;m++) fprintf(mid_fp, "\n");
 				pre_line_num = line_num;
-				w = gettoken(fp);
+				w = GetToken(fp);
 				continue;
 			}
 			else if (w == ERROR_TOKEN) {
@@ -119,7 +119,7 @@ status pre_process(FILE* fp) {
 		}
 		pre_line_num = line_num;
 
-		w = gettoken(fp);
+		w = GetToken(fp);
 	} while (w != EOF);
 	fclose(mid_fp);
 	return OK;

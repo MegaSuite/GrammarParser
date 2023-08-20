@@ -1,4 +1,4 @@
-#include"lexer.h"
+#include"tokens_define.h"
 #include"parser.h"
 #include"profuction.h"
 #include"preprocess.h"
@@ -7,13 +7,6 @@
 char filename[30];
 int ch = 1;
 
-void GetFile()
-{
-    system("cls");
-    printf("请输入文件名：\n" );
-    scanf("%s", filename);
-
-}
 int main()
 {
 	CTree T;
@@ -28,7 +21,8 @@ int main()
 	int error_line_num=0;//记录错误总个数
 
 ChooseFile://选择文件标志
-    GetFile();
+    printf("请输入文件名：\n→" );
+    scanf("%s", filename);
 	if (!(fp = fopen(filename, "r")))
 	{
 		printf("...选择文件错误，请重新选择...\n");
@@ -41,7 +35,7 @@ ChooseFile://选择文件标志
 	{
 		printf("---基于高级语言源程序格式处理工具菜单---\n");
         printf("\t1. 词法分析\n\t2. 语法分析\n\t3. 缩进编排\n\t4. 选择文件\n\t0. 退出程序\n");
-        printf("---请选择：\n");
+        printf("---请选择：\n→");
 		scanf("%d", &ch);
 
 		switch (ch)
@@ -54,7 +48,7 @@ ChooseFile://选择文件标志
                     printf("...选择文件错误，请重新选择...\n");
                     break;
                 }
-                printf("...正在预编译文件...\n");
+                printf("....正在预编译文件....\n");
                 if (pre_process(fp))
                     printf("预编译成功！按任意键继续...\n");
 
@@ -66,16 +60,18 @@ ChooseFile://选择文件标志
 
                 mid_fp = fopen("C_mid_file.txt", "r");
                 line_num = 1;  //行数初始化为1
-                system("cls");
+//                system("cls");
                 printf("\n");
-                printf("	单词类别				单词值\n");
+                printf("\t单词类别\t\t\t\t单词值\n");
+                printf("\t---------------------------------------------\n");
 
                 while (!feof(mid_fp))
                 {
-                    w = gettoken(mid_fp);
+                    w = GetToken(mid_fp);
                     if (w >= AUTO && w <= DEFINE)
+                    {
                         printf("	关键字					%s\n", token_text);
-
+                    }
                     switch (w)
                     {
                         case POUND:
@@ -187,13 +183,13 @@ ChooseFile://选择文件标志
                 }
 
                 printf("\n");
-                printf("错误列表\n错误总数:  %d\n", error_line_num);
+                printf("\t     --------错误列表--------\n\t\t  错误总数:  %d\n", error_line_num);
                 if (error_line_num)
                 {
                     printf("\n");
-                    printf("序号	行数\n");
+                    printf("\t\t  序号	  行数\n");
                     for (int i = 0; i < error_line_num; i++)
-                        printf("   %d       %d\n", i+1, error_line[i]);
+                        printf("\t\t     %d       %d\n", i+1, error_line[i]);
 
                 }
                 fclose(fp);
@@ -205,7 +201,7 @@ ChooseFile://选择文件标志
 
 
             case 2:
-                printf("...正在预编译文件...\n");
+                printf(".....正在预编译文件.....\n");
                 line_num = 1;  //行数初始化为1
                 fp = fopen(filename, "r");
                 if (pre_process(fp))
