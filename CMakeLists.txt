@@ -7,5 +7,5 @@ add_executable(untitled main.cpp
         parser.cpp
         tokens_define.cpp
         preprocess.cpp
-        printfile.cpp
+        file_writer.cpp
         profuction.cpp)

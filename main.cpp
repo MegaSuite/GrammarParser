@@ -2,7 +2,7 @@
 #include"parser.h"
 #include"profuction.h"
 #include"preprocess.h"
-#include"printfile.h"
+#include"file_writer.h"
 
 char filename[30];
 int ch = 1;

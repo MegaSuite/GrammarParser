@@ -1,25 +1,31 @@
-#include"printfile.h"
+#include"file_writer.h"
 
 status PrintFile(FILE* fp) 
 {
 	int IndentNum=0, line = 1;
 	int i;
     char c;
+
 	FILE* print_fp;
+
 	char filename[30] = "C_print_file.txt";
 	print_fp = fopen(filename, "w");
+
 	while (!printList.empty())
 	{
 		IndentNum = printList.front().indent;
 		printList.pop();
 		while (!printList.empty() && line == printList.front().linenum)
                 printList.pop();
+
 		while (!printList.empty() && line < printList.front().linenum)
 		{
 			for (i = 0; i < IndentNum; i++)
 				fputc('\t', print_fp);
+
 			while ((c = fgetc(fp)) != '\n')
 				fputc(c, print_fp);
+
 			fputc(c, print_fp);
 			line++;
 		}
