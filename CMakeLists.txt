@@ -6,6 +6,6 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(untitled main.cpp
         parser.cpp
         tokens_define.cpp
-        preprocess.cpp
+        process_ahead.cpp
         file_writer.cpp
-        profuction.cpp)
+        structure_define.cpp)

@@ -1,4 +1,5 @@
 #pragma once //预处理
+
 #include<cstdio>
 #include<cstdlib>
 #include<cstring>
@@ -8,13 +9,13 @@ typedef int status;
 #define OK 1
 #define ERROR 0
 
-//用于储存define宏定义数据
+//储存define宏定义数据
 typedef struct define_data {
 	char ident[50];
 	char string[50];
 }define_data;
 
-//用于储存include头文件定义数据
+//储存include头文件定义数据
 typedef struct include_data {
 	char string[50];
 }include_data;

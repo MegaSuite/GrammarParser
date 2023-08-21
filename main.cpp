@@ -1,7 +1,7 @@
 #include"tokens_define.h"
 #include"parser.h"
-#include"profuction.h"
-#include"preprocess.h"
+#include"structure_define.h"
+#include"process_ahead.h"
 #include"file_writer.h"
 
 char filename[30];

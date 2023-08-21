@@ -17,7 +17,7 @@ status program(FILE* fp, CTree& T)  //语法单位<程序>的子程序
 	T.nodes[0].data = (char*)malloc((strlen("程序") + 1) * sizeof(char)); //定义语法树的根结点nodes[0]
 	strcpy(T.nodes[0].data, "程序");
 	T.nodes[0].indent = 0;
-	T.nodes[0].firstchild = NULL;
+	T.nodes[0].FirstChild = NULL;
 	InsertChild(T, T.r, 1, c); //将c子树插入到语法树中
 	return OK;
 }
@@ -31,7 +31,7 @@ status ExtDefList(FILE* fp, CTree& T) //语法单位<外部定义序列>的子程序
 	T.nodes[0].data = (char*)malloc((strlen("外部定义序列") + 1) * sizeof(char)); //创建外部定义序列树
 	strcpy(T.nodes[0].data, "外部定义序列");
 	T.nodes[0].indent = 0;
-	T.nodes[0].firstchild = NULL;
+	T.nodes[0].FirstChild = NULL;
 	if (!ExtDef(fp, c)) return ERROR;
 	InsertChild(T, T.r, 1, c); //处理一个外部定义，得到一棵子树，作为根的第一棵子树
 	flag = ExtDefList(fp, c);
@@ -63,13 +63,13 @@ status ExtVarDef(FILE* fp, CTree& T)  //语法单位<外部变量定义>子程序
 	T.nodes[0].data = (char*)malloc((strlen("外部变量定义：") + 1) * sizeof(char)); //生成外部变量定义结点
 	strcpy(T.nodes[0].data, "外部变量定义：");
 	T.nodes[0].indent = 1;
-	T.nodes[0].firstchild = NULL;
+	T.nodes[0].FirstChild = NULL;
 	c.n = 1; c.r = 0;   //生成外部变量类型结点
 	c.nodes[0].data = (char*)malloc((strlen(kind) + strlen("类型：") + 1) * sizeof(char));
 	strcpy(c.nodes[0].data, "类型：");
 	strcat(c.nodes[0].data, kind);
 	c.nodes[0].indent = 1;
-	c.nodes[0].firstchild = NULL;
+	c.nodes[0].FirstChild = NULL;
 	if (!InsertChild(T, T.r, 1, c)) return ERROR;		//c作为T的第一个孩子
 	if (!VarList(fp, p)) return ERROR;
 	if (!InsertChild(T, T.r, 2, p)) return ERROR;		//p作为T的第二个孩子
@@ -83,7 +83,7 @@ status VarList(FILE* fp, CTree& T)  //语法单位<变量序列>子程序
 	T.nodes[0].data = (char*)malloc((strlen("变量序列") + 1) * sizeof(char));
 	strcpy(T.nodes[0].data, "变量序列");
 	T.nodes[0].indent = 0;
-	T.nodes[0].firstchild = NULL;
+	T.nodes[0].FirstChild = NULL;
 	if (w == LM)     //区分是数组变量还是变量
 	{
 		strcat(tokenText0, "[");  //识别数组，只支持一维数组
@@ -98,7 +98,7 @@ status VarList(FILE* fp, CTree& T)  //语法单位<变量序列>子程序
 				strcpy(c.nodes[0].data, "Array: ");
 				strcat(c.nodes[0].data, tokenText0); // 初始时，tokenText0保存了第一个变量名
 				c.nodes[0].indent = 1;
-				c.nodes[0].firstchild = NULL;
+				c.nodes[0].FirstChild = NULL;
 				w = GetToken(fp);
 			}
 			else return ERROR;
@@ -112,7 +112,7 @@ status VarList(FILE* fp, CTree& T)  //语法单位<变量序列>子程序
 		strcpy(c.nodes[0].data, "ID: ");
 		strcat(c.nodes[0].data, tokenText0);
 		c.nodes[0].indent = 1;
-		c.nodes[0].firstchild = NULL;
+		c.nodes[0].FirstChild = NULL;
 	}
 	if (!InsertChild(T, T.r, 1, c))	return ERROR;//识别的变量结点作为T的第一个孩子
 	if (w != COMMA && w != SEMI) return ERROR;
@@ -138,13 +138,13 @@ status funcDef(FILE* fp, CTree& T)  //语法单位<函数定义>子程序
 	T.nodes[0].data = (char*)malloc((strlen("函数定义：") + 1) * sizeof(char));
 	strcpy(T.nodes[0].data, "函数定义：");
 	T.nodes[0].indent = 1;
-	T.nodes[0].firstchild = NULL;
+	T.nodes[0].FirstChild = NULL;
 	c.n = 1; c.r = 0;  //生成函数返回值类型结点c
 	c.nodes[0].data = (char*)malloc((strlen(kind) + strlen("类型：") + 1) * sizeof(char));
 	strcpy(c.nodes[0].data, "类型：");
 	strcat(c.nodes[0].data, kind);
 	c.nodes[0].indent = 1;
-	c.nodes[0].firstchild = NULL;
+	c.nodes[0].FirstChild = NULL;
 	if (!InsertChild(T, T.r, 1, c)) return ERROR;
 	w = GetToken(fp);
 	//函数括号内可能无参数，可能是void，可能是参数序列，其他情况报错
@@ -155,7 +155,7 @@ status funcDef(FILE* fp, CTree& T)  //语法单位<函数定义>子程序
 	strcpy(p.nodes[0].data, "函数名：");
 	strcat(p.nodes[0].data, tokenText0);
 	p.nodes[0].indent = 1;
-	p.nodes[0].firstchild = NULL;
+	p.nodes[0].FirstChild = NULL;
 	if (w == RS || w == VOID) //判断void情况或参数序列情况
 	{
 		if (w == VOID)
@@ -176,7 +176,7 @@ status funcDef(FILE* fp, CTree& T)  //语法单位<函数定义>子程序
 	f.nodes[0].data = (char*)malloc((strlen("函数体：") + 1) * sizeof(char));
 	strcpy(f.nodes[0].data, "函数体：");
 	f.nodes[0].indent = 1;
-	f.nodes[0].firstchild = NULL;
+	f.nodes[0].FirstChild = NULL;
 	if (w == LL)  //存在函数体则判断复合语句
 	{
 		if (!CompStat(fp, s)) return ERROR;
@@ -195,7 +195,7 @@ status ParameList(FILE* fp, CTree& T)  //语法单位<形参序列>子程序
 	T.nodes[0].data = (char*)malloc((strlen("形参序列") + 1) * sizeof(char));
 	strcpy(T.nodes[0].data, "形参序列");
 	T.nodes[0].indent = 0;
-	T.nodes[0].firstchild = NULL;
+	T.nodes[0].FirstChild = NULL;
 	if (!FormParDef(fp, c)) return ERROR;
 	if (!InsertChild(T, T.r, 1, c)) return ERROR;
 	w = GetToken(fp);
@@ -218,7 +218,7 @@ status FormParDef(FILE* fp, CTree& T)  //语法单位<形参>子程序
 	T.nodes[0].data = (char*)malloc((strlen("形参：") + 1) * sizeof(char));
 	strcpy(T.nodes[0].data, "形参：");
 	T.nodes[0].indent = 1;
-	T.nodes[0].firstchild = NULL;	
+	T.nodes[0].FirstChild = NULL;
 	if (w != INT && w != LONG && w != SHORT && w != SIGNED && w != UNSIGNED &&
 		w != FLOAT && w != DOUBLE && w != CHAR) return ERROR;
 	c.n = 1; c.r = 0;		//生成形参类型结点
@@ -226,7 +226,7 @@ status FormParDef(FILE* fp, CTree& T)  //语法单位<形参>子程序
 	strcpy(c.nodes[0].data, "类型：");
 	strcat(c.nodes[0].data, token_text);
 	c.nodes[0].indent = 1;
-	c.nodes[0].firstchild = NULL;
+	c.nodes[0].FirstChild = NULL;
 	InsertChild(T, T.r, 1, c);
 	w = GetToken(fp);
 	if (w != IDENT) return ERROR;
@@ -235,7 +235,7 @@ status FormParDef(FILE* fp, CTree& T)  //语法单位<形参>子程序
 	strcpy(p.nodes[0].data, "ID: ");
 	strcat(p.nodes[0].data, token_text);
 	p.nodes[0].indent = 1;
-	p.nodes[0].firstchild = NULL;
+	p.nodes[0].FirstChild = NULL;
 	InsertChild(T, T.r, 2, p);
 	return OK;
 }
@@ -249,7 +249,7 @@ status CompStat(FILE* fp, CTree& T)  //语法单位<复合语句>子程序
 	T.nodes[0].data = (char*)malloc((strlen("复合语句：") + 1) * sizeof(char));
 	strcpy(T.nodes[0].data, "复合语句：");
 	T.nodes[0].indent = 1;
-	T.nodes[0].firstchild = NULL;
+	T.nodes[0].FirstChild = NULL;
 	//注意其中局部变量说明和语句序列都可以为空
 	w = GetToken(fp);
 	elem = { ++indent0,line_num };
@@ -288,7 +288,7 @@ status LocVarList(FILE* fp, CTree& T)  //语法单位<局部变量定义序列>子程序
 	T.nodes[0].data = (char*)malloc((strlen("局部变量定义序列") + 1) * sizeof(char));
 	strcpy(T.nodes[0].data, "局部变量定义序列");
 	T.nodes[0].indent = 0;
-	T.nodes[0].firstchild = NULL;
+	T.nodes[0].FirstChild = NULL;
 	if (!LocVarDef(fp, c)) return ERROR;
 	if (!InsertChild(T, T.r, 1, c)) return ERROR;
 	flag = LocVarList(fp, p);
@@ -305,14 +305,14 @@ status LocVarDef(FILE* fp, CTree& T)//语法单位<局部变量定义>子程序
 	T.nodes[0].data = (char*)malloc((strlen("局部变量定义：") + 1) * sizeof(char));
 	strcpy(T.nodes[0].data, "局部变量定义：");
 	T.nodes[0].indent = 1;
-	T.nodes[0].firstchild = NULL;	
+	T.nodes[0].FirstChild = NULL;
 	
 	c.n = 1; c.r = 0;		//生成局部变量类型结点
 	c.nodes[0].data = (char*)malloc((strlen(token_text) + strlen("类型：") + 1) * sizeof(char));
 	strcpy(c.nodes[0].data, "类型：");
 	strcat(c.nodes[0].data, token_text);
 	c.nodes[0].indent = 1;
-	c.nodes[0].firstchild = NULL;
+	c.nodes[0].FirstChild = NULL;
 	if (!InsertChild(T, T.r, 1, c)) return ERROR;
 	w = GetToken(fp);
 	if (w != IDENT) return ERROR;
@@ -336,7 +336,7 @@ status StatList(FILE* fp, CTree& T)  //语法单位<语句序列>子程序
 		T.nodes[0].data = (char*)malloc((strlen("语句序列") + 1) * sizeof(char));
 		strcpy(T.nodes[0].data, "语句序列");
 		T.nodes[0].indent = 0;
-		T.nodes[0].firstchild = NULL;
+		T.nodes[0].FirstChild = NULL;
 		InsertChild(T, T.r, 1, c);
 		flag = StatList(fp, p);
 		if (!flag) return ERROR;
@@ -362,7 +362,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		c.nodes[0].data = (char*)malloc((strlen("条件：") + 1) * sizeof(char));
 		strcpy(c.nodes[0].data, "条件：");
 		c.nodes[0].indent = 1;
-		c.nodes[0].firstchild = NULL;
+		c.nodes[0].FirstChild = NULL;
 		InsertChild(c, c.r, 1, p);
 		w = GetToken(fp);
 		if (w == LL)
@@ -381,7 +381,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		p.nodes[0].data = (char*)malloc((strlen("IF子句：") + 1) * sizeof(char));
 		strcpy(p.nodes[0].data, "IF子句：");
 		p.nodes[0].indent = 1;
-		p.nodes[0].firstchild = NULL;
+		p.nodes[0].FirstChild = NULL;
 		InsertChild(p, p.r, 1, q);
 		if (w == ELSE)
 		{
@@ -402,13 +402,13 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 			q.nodes[0].data = (char*)malloc((strlen("ELSE子句：") + 1) * sizeof(char));
 			strcpy(q.nodes[0].data, "ELSE子句：");
 			q.nodes[0].indent = 1;
-			q.nodes[0].firstchild = NULL;
+			q.nodes[0].FirstChild = NULL;
 			InsertChild(q, q.r, 1, k);
 			T.n = 1; T.r = 0;
 			T.nodes[0].data = (char*)malloc((strlen("if-else语句：") + 1) * sizeof(char));
 			strcpy(T.nodes[0].data, "if-else语句：");
 			T.nodes[0].indent = 1;
-			T.nodes[0].firstchild = NULL;
+			T.nodes[0].FirstChild = NULL;
 			InsertChild(T, T.r, 1, c);
 			InsertChild(T, T.r, 2, p);
 			InsertChild(T, T.r, 3, q);
@@ -419,7 +419,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 			T.nodes[0].data = (char*)malloc((strlen("if语句：") + 1) * sizeof(char));
 			strcpy(T.nodes[0].data, "if语句：");
 			T.nodes[0].indent = 1;
-			T.nodes[0].firstchild = NULL;
+			T.nodes[0].FirstChild = NULL;
 			InsertChild(T, T.r, 1, c);
 			InsertChild(T, T.r, 2, p);
 		}
@@ -435,43 +435,43 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		T.nodes[0].data = (char*)malloc((strlen("for语句：") + 1) * sizeof(char));
 		strcpy(T.nodes[0].data, "for语句：");
 		T.nodes[0].indent = 1;
-		T.nodes[0].firstchild = NULL;
+		T.nodes[0].FirstChild = NULL;
 		c.n = 1; c.r = 0;
 		c.nodes[0].data = (char*)malloc((strlen("初始表达式：") + 1) * sizeof(char));
 		strcpy(c.nodes[0].data, "初始表达式：");
 		c.nodes[0].indent = 1;
-		c.nodes[0].firstchild = NULL;
+		c.nodes[0].FirstChild = NULL;
 		InsertChild(T, T.r, 1, c);
 		c.n = 1; c.r = 0;
 		c.nodes[0].data = (char*)malloc((strlen("终止条件：") + 1) * sizeof(char));
 		strcpy(c.nodes[0].data, "终止条件：");
 		c.nodes[0].indent = 1;
-		c.nodes[0].firstchild = NULL;
+		c.nodes[0].FirstChild = NULL;
 		InsertChild(T, T.r, 2, c);
 		c.n = 1; c.r = 0;
 		c.nodes[0].data = (char*)malloc((strlen("循环表达式：") + 1) * sizeof(char));
 		strcpy(c.nodes[0].data, "循环表达式：");
 		c.nodes[0].indent = 1;
-		c.nodes[0].firstchild = NULL;
+		c.nodes[0].FirstChild = NULL;
 		InsertChild(T, T.r, 3, c);
 		c.n = 1; c.r = 0;
 		c.nodes[0].data = (char*)malloc((strlen("for子句：") + 1) * sizeof(char));
 		strcpy(c.nodes[0].data, "for子句：");
 		c.nodes[0].indent = 1;
-		c.nodes[0].firstchild = NULL;
+		c.nodes[0].FirstChild = NULL;
 		InsertChild(T, T.r, 4, c);
 		w = GetToken(fp);
 		if (w != LS) return ERROR;
 		w = GetToken(fp);
 		if (!exp(fp, c, SEMI)) return ERROR;
-		InsertChild(T, T.nodes[0].firstchild->child, 1, c);
+		InsertChild(T, T.nodes[0].FirstChild->child, 1, c);
 		w = GetToken(fp);
 		if (w == SEMI) return ERROR;
 		if (!exp(fp, c, SEMI)) return ERROR;
-		InsertChild(T, T.nodes[0].firstchild->next->child, 1, c);
+		InsertChild(T, T.nodes[0].FirstChild->next->child, 1, c);
 		w = GetToken(fp);
 		if (!exp(fp, c, RS)) return ERROR;
-		InsertChild(T, T.nodes[0].firstchild->next->next->child, 1, c);
+		InsertChild(T, T.nodes[0].FirstChild->next->next->child, 1, c);
 		w = GetToken(fp);
 		if (w == LL)
 		{
@@ -485,7 +485,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 			elem = { --indent0,line_num };
 			printList.push(elem);
 		}
-		InsertChild(T, T.nodes[0].firstchild->next->next->next->child, 1, c);
+		InsertChild(T, T.nodes[0].FirstChild->next->next->next->child, 1, c);
 		return OK;
 	}
 	else if (w == WHILE) {
@@ -511,7 +511,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		T.nodes[0].data = (char*)malloc((strlen("while语句：") + 1) * sizeof(char));
 		strcpy(T.nodes[0].data, "while语句：");
 		T.nodes[0].indent = 1;
-		T.nodes[0].firstchild = NULL;
+		T.nodes[0].FirstChild = NULL;
 		InsertChild(T, T.r, 1, c);
 		InsertChild(T, T.r, 2, p);
 		return OK;
@@ -521,7 +521,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		T.nodes[0].data = (char*)malloc((strlen("continue语句：") + 1) * sizeof(char));
 		strcpy(T.nodes[0].data, "continue语句：");
 		T.nodes[0].indent = 1;
-		T.nodes[0].firstchild = NULL;
+		T.nodes[0].FirstChild = NULL;
 		w = GetToken(fp);
 		if (w != SEMI) return ERROR;
 		w = GetToken(fp);
@@ -532,7 +532,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		T.nodes[0].data = (char*)malloc((strlen("break语句：") + 1) * sizeof(char));
 		strcpy(T.nodes[0].data, "break语句：");
 		T.nodes[0].indent = 1;
-		T.nodes[0].firstchild = NULL;
+		T.nodes[0].FirstChild = NULL;
 		w = GetToken(fp);
 		if (w != SEMI) return ERROR;
 		w = GetToken(fp);
@@ -543,7 +543,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		T.nodes[0].data = (char*)malloc((strlen("return语句：") + 1) * sizeof(char));
 		strcpy(T.nodes[0].data, "return语句：");
 		T.nodes[0].indent = 1;
-		T.nodes[0].firstchild = NULL;
+		T.nodes[0].FirstChild = NULL;
 		w = GetToken(fp);
 		if (w == SEMI) return ERROR;
 		if (!exp(fp, c, SEMI)) return ERROR;
@@ -569,7 +569,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		T.nodes[0].data = (char*)malloc((strlen("空语句") + 1) * sizeof(char));
 		strcpy(T.nodes[0].data, "空语句");
 		T.nodes[0].indent = 1;
-		T.nodes[0].firstchild = NULL;
+		T.nodes[0].FirstChild = NULL;
 		w = GetToken(fp);
 		return OK;
 	}
@@ -589,12 +589,12 @@ status exp(FILE* fp, CTree& T, int endsym)//语法单位<表达式>子程序
 	T.nodes[0].data = (char*)malloc((strlen("表达式语句：") + 1) * sizeof(char));
 	strcpy(T.nodes[0].data, "表达式语句：");
 	T.nodes[0].indent = 1;
-	T.nodes[0].firstchild = NULL;
+	T.nodes[0].FirstChild = NULL;
 	int error = 0;
 	node->n = 1; node->r = 0; //设立起止符号
 	node->nodes[0].data = (char*)malloc((strlen("#") + 1) * sizeof(char));
 	strcpy(node->nodes[0].data, "#");
-	node->nodes[0].firstchild = NULL;
+	node->nodes[0].FirstChild = NULL;
 	InitStack(opn);  InitStack(op);  Push(op, node);		//初始化，将起止符#入栈
 	while ((w != POUND || strcmp(node->nodes[0].data, "#")) && !error)  //当运算符栈栈顶不是起止符号，并没有错误时
 	{
@@ -608,7 +608,7 @@ status exp(FILE* fp, CTree& T, int endsym)//语法单位<表达式>子程序
 			strcpy(node->nodes[0].data, "ID: ");
 			strcat(node->nodes[0].data, token_text);
 			node->nodes[0].indent = 1;
-			node->nodes[0].firstchild = NULL;
+			node->nodes[0].FirstChild = NULL;
 			Push(opn, node);			//根据w生成一个结点，结点指针进栈opn
 			w = GetToken(fp);
 		}
@@ -626,7 +626,7 @@ status exp(FILE* fp, CTree& T, int endsym)//语法单位<表达式>子程序
 				node->nodes[0].data = (char*)malloc((strlen(token_text) + 1) * sizeof(char));
 				strcpy(node->nodes[0].data, token_text);
 				node->nodes[0].indent = 1;
-				node->nodes[0].firstchild = NULL;
+				node->nodes[0].FirstChild = NULL;
 				node->n = 1; node->r = 0;
 				Push(op, node);		//根据w生成一个结点，结点指针进栈opn
 				w = GetToken(fp);
