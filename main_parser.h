@@ -5,14 +5,18 @@
 #include"tokens_define.h"
 #include"structure_define.h"
 using namespace std;
+
+
 #define OK 1
 #define ERROR 0
-#define INFEASIBLE -1
+//#define INFEASIBLE -1
+
 struct print
 {
 	int indent;						//记录缩进值
-	int linenum;					//记录缩进的行号
+	int line_num;					//记录缩进的行号
 };
+
 typedef int status;
 extern int indent0;					//记录源代码的缩进值
 extern queue<print> printList;		//存储各个打印格式单元

@@ -2,7 +2,7 @@
 
 #include<cstdio>
 #include<cstring>
-#include"parser.h"
+#include"main_parser.h"
 
 #define ERROR 0
 #define OK 1

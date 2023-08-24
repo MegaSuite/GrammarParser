@@ -4,7 +4,7 @@ project(untitled)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(untitled main.cpp
-        parser.cpp
+        main_parser.cpp
         tokens_define.cpp
         process_ahead.cpp
         file_writer.cpp

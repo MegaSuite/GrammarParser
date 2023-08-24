@@ -15,10 +15,10 @@ status PrintFile(FILE* fp)
 	{
 		IndentNum = printList.front().indent;
 		printList.pop();
-		while (!printList.empty() && line == printList.front().linenum)
+		while (!printList.empty() && line == printList.front().line_num)
                 printList.pop();
 
-		while (!printList.empty() && line < printList.front().linenum)
+		while (!printList.empty() && line < printList.front().line_num)
 		{
 			for (i = 0; i < IndentNum; i++)
 				fputc('\t', print_fp);
