@@ -27,9 +27,6 @@ int GetToken(FILE* fp)
             return EOF;
 	}
 
-//	if (c == EOF)
-//        return EOF;
-
 	//判断标识符或者关键字
     if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
     {

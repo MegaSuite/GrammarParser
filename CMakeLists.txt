@@ -8,4 +8,7 @@ add_executable(untitled main.cpp
         tokens_define.cpp
         process_ahead.cpp
         file_writer.cpp
-        structure_define.cpp)
+        structure_define.cpp
+        Test/MacroRight
+        Test/stringright
+        Test/MacroWrong)

@@ -174,22 +174,27 @@ ChooseFile://选择文件标志
                             printf("	逗号					,\n");
                             break;
                         case ERROR_TOKEN:
+                        {
                             error_line[error_line_num] = line_num;
                             error_line_num++;
                             break;
+                        }
                         default:
-                            continue;
+//                            continue;
+                            break;
                     }
                 }
 
                 printf("\n");
-                printf("\t     --------错误列表--------\n\t\t  错误总数:  %d\n", error_line_num);
-                if (error_line_num)
+                printf("\t     --------错误列表--------\n");
+                printf("\t\t  错误总数:  %d\n", error_line_num - 1);
+//                printf("%d",error_line[10]);
+                if (error_line_num > 1)
                 {
                     printf("\n");
                     printf("\t\t  序号	  行数\n");
-                    for (int i = 0; i < error_line_num; i++)
-                        printf("\t\t     %d       %d\n", i+1, error_line[i]);
+                    for (int i = 0; i < error_line_num - 1; i++)
+                        printf("\t\t     %d       %d\n", i+1, error_line[i+1]);//从1开始，避免0号位0的输出
 
                 }
                 fclose(fp);
@@ -205,7 +210,7 @@ ChooseFile://选择文件标志
                 line_num = 1;  //行数初始化为1
                 fp = fopen(filename, "r");
                 if (pre_process(fp))
-                    printf("预编译成功！按任意键继续...\n");
+                    printf("预编译成功！\n");
 
                 else
                 {
@@ -214,7 +219,7 @@ ChooseFile://选择文件标志
                 }
                 mid_fp = fopen("C_mid_file.txt", "r");
                 line_num = 1;  //行数初始化为1
-                system("cls");
+//                system("cls");
                 if (!program(mid_fp, T))
                 {
                     printf("发生生成错误！错误行号：%d\n", line_num);
@@ -254,7 +259,7 @@ ChooseFile://选择文件标志
                 fclose(fp);
                 fp = fopen(filename, "r");
                 PrintFile(fp);
-                printf("缩进编排文件生成成功！\n");
+                printf("缩进编排文件生成成功，请进入[cmake-build-debug]文件夹查看！\n");
                 printf("按任意键继续...\n");
 
                 getchar();

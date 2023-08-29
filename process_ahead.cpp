@@ -166,6 +166,7 @@ status pre_process(FILE* fp)
                     fprintf(mid_fp, "%s ", token_text);
 			}
 		}
+
 		pre_line_num = line_num;
 
 		w = GetToken(fp);
