@@ -10,5 +10,5 @@ add_executable(untitled main.cpp
         file_writer.cpp
         structure_define.cpp
         Test/MacroRight
-        Test/stringright
+        Test/StringRight
         Test/MacroWrong)

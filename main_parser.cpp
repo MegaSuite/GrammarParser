@@ -416,7 +416,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		w = GetToken(fp);
 		if (w == RS)
             return ERROR;
-		if (!exp(fp, p, RS))
+		if (!Expr(fp, p, RS))//括号内没有表达式
             return ERROR;
 		c.n = 1; c.r = 0;  //生成if语句子树
 		c.nodes[0].data = (char*)malloc((strlen("条件：") + 1) * sizeof(char));
@@ -428,8 +428,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		if (w == LL)
 			if (!CompStat(fp, q))
                 return ERROR;
-
-		else
+        else
 		{
 			elem = { ++indent0,line_num };
 			printList.push(elem);
@@ -454,7 +453,8 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 			{
 				elem = { ++indent0,line_num };
 				printList.push(elem);
-				if (!Statement(fp, k)) return ERROR;
+				if (!Statement(fp, k))
+                    return ERROR;
 				elem = { --indent0,line_num };
 				printList.push(elem);
 			}
@@ -526,17 +526,17 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		if (w != LS)
             return ERROR;
 		w = GetToken(fp);
-		if (!exp(fp, c, SEMI))
+		if (!Expr(fp, c, SEMI))
             return ERROR;
 		InsertChild(T, T.nodes[0].FirstChild->child, 1, c);
 		w = GetToken(fp);
 		if (w == SEMI)
             return ERROR;
-		if (!exp(fp, c, SEMI))
+		if (!Expr(fp, c, SEMI))
             return ERROR;
 		InsertChild(T, T.nodes[0].FirstChild->next->child, 1, c);
 		w = GetToken(fp);
-		if (!exp(fp, c, RS))
+		if (!Expr(fp, c, RS))
             return ERROR;
 		InsertChild(T, T.nodes[0].FirstChild->next->next->child, 1, c);
 		w = GetToken(fp);
@@ -564,7 +564,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		w = GetToken(fp);
 		if (w == RS)
             return ERROR;
-		if (!exp(fp, c, RS))
+		if (!Expr(fp, c, RS))
             return ERROR;
 		w = GetToken(fp);
 		if (w == LL)
@@ -625,7 +625,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		w = GetToken(fp);
 		if (w == SEMI)
             return ERROR;
-		if (!exp(fp, c, SEMI))
+		if (!Expr(fp, c, SEMI))
             return ERROR;
 		w = GetToken(fp);
 		InsertChild(T, T.r, 1, c);
@@ -633,13 +633,13 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 	}
 	else if (w == LS)
     {
-		if (!exp(fp, T, RS))
+		if (!Expr(fp, T, RS))
             return ERROR;
 		w = GetToken(fp);
 		return OK;
 	}
 	else if (w == IDENT || w == INT_CONST || w == UNSIGNED_CONST || w == LONG_CONST || w == UNSIGNED_LONG_CONST || w == DOUBLE_CONST || w == FLOAT_CONST || w == LONG_DOUBLE_CONST || w == CHAR_CONST) {
-		if (!exp(fp, T, SEMI))
+		if (!Expr(fp, T, SEMI))
             return ERROR;
 		w = GetToken(fp);
 		return OK;
@@ -662,7 +662,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 
 }
 
-status exp(FILE* fp, CTree& T, int endsym)//语法单位<表达式>子程序
+status Expr(FILE* fp, CTree& T, int endsym)//语法单位<表达式>子程序
 {
 	//已经读入了第一个单词在w中
 	SqStack op;		//运算符栈

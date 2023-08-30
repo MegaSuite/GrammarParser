@@ -4,7 +4,7 @@
 #include"process_ahead.h"
 #include"file_writer.h"
 
-char filename[30];
+char filename[100];
 int ch = 1;
 
 int main()
