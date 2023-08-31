@@ -1,17 +1,22 @@
-void func(){
-int a;int b;int c;
-a=a+(b-c)*b/c;
+void func(int a, int b)
+{
+char c;
+int group[30];
+a=a+(b-c)*(b%f)/c;
 if(a>b)
 a=1;
-else
+else {
 b=1;
-for(a=0;a<1;a=a+1){
-continue;
 }
-while(b){
-if(a==b) {
-break;
+while(a<1){
+b=b+1;
 }
-}
+c = 'a';
+c = '\t';
+c = '\'';
+c = '\\';
+return b;
 }
 
+
+//函数定义、局部变量定义、表达式语句、if-else语句、if 语句、for 语句、while 语句，continue 语句以及break 语句

@@ -1,0 +1,6 @@
+int func(int a,int b){
+a=a+b;
+return a;
+
+
+//结尾符号出错问题，未加分号或者右大括号

@@ -1,0 +1,7 @@
+int 0a;
+int func(int a ,int b){
+a=a+b;
+return a;
+}
+
+//变量定义语句错误设置在变量类型，标识符以及结尾处

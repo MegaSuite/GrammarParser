@@ -1,0 +1,9 @@
+int a,
+int func(a ,int b){
+a=a+b;
+return a;
+}
+
+
+
+//函数定义语句错误则设置在返回值类型，函数名以及形参

@@ -337,42 +337,42 @@ int GetToken(FILE* fp)
                 return EQUAL_TO;
             }
 
-        case'{':
+        case '{':
             token_text[i++] = c;
             token_text[i] = '\0';
             return LL;
 
-        case'}':
+        case '}':
             token_text[i++] = c;
             token_text[i] = '\0';
             return RL;
 
-        case'[':
+        case '[':
             token_text[i++] = c;
             token_text[i] = '\0';
             return LM;
 
-        case']':
+        case ']':
             token_text[i++] = c;
             token_text[i] = '\0';
             return RM;
 
-        case'(':
+        case '(':
             token_text[i++] = c;
             token_text[i] = '\0';
             return LS;
 
-        case')':
+        case ')':
             token_text[i++] = c;
             token_text[i] = '\0';
             return RS;
 
-        case';':
+        case ';':
             token_text[i++] = c;
             token_text[i] = '\0';
             return SEMI;
 
-        case',':
+        case ',':
             token_text[i++] = c;
             token_text[i] = '\0';
             return COMMA;

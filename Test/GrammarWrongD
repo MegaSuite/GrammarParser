@@ -1,0 +1,8 @@
+int func(int a){
+for(a=1;;a=a+1){
+a=a-1;
+}
+return a;
+}
+
+//未添加条件表达式语句

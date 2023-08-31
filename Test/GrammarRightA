@@ -8,3 +8,6 @@ int group[30];
 return b;
 }
 float i;
+
+
+//包含外部变量定义、函数定义、局部变量定义及return 语句

@@ -29,7 +29,7 @@ status ExtDefList(FILE* fp, CTree& T);//语法单位<外部定义序列>的子程序
 status ExtDef(FILE* fp, CTree& T);//语法单位<外部定义>的子程序
 status ExtVarDef(FILE* fp, CTree& T);//语法单位<外部变量定义>子程序
 status VarList(FILE* fp, CTree& T);//语法单位<变量序列>子程序
-status funcDef(FILE* fp, CTree& T);//语法单位<函数定义>子程序
+status Function(FILE* fp, CTree& T);//语法单位<函数定义>子程序
 status ParameList(FILE* fp, CTree& T);//语法单位<形参序列>子程序
 status FormParDef(FILE* fp, CTree& T);//语法单位<形参定义>子程序
 status CompStat(FILE* fp, CTree& T);//语法单位<复合语句>子程序

@@ -62,7 +62,7 @@ status ExtDef(FILE* fp, CTree& T)  //语法单位<外部定义>的子程序
 	if (w != LS)
         flag = ExtVarDef(fp, T);	//调用外部变量定义子程序
 	else
-        flag = funcDef(fp, T);			//调用函数定义子程序
+        flag = Function(fp, T);			//调用函数定义子程序
 	if (!flag)
         return ERROR;
 	return OK;
@@ -155,7 +155,7 @@ status VarList(FILE* fp, CTree& T)  //语法单位<变量序列>子程序
 }
 
 
-status funcDef(FILE* fp, CTree& T)  //语法单位<函数定义>子程序
+status Function(FILE* fp, CTree& T)  //语法单位<函数定义>子程序
 {
 	CTree c; CTree p; //c结点为函数返回值类型，p结点为函数名结点
 	CTree q; CTree f; CTree s; //q结点为参数序列结点,f为函数体结点，s为可能的复合语句结点
@@ -426,11 +426,11 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		InsertChild(c, c.r, 1, p);
 		w = GetToken(fp);
 		if (w == LL)
-			if (!CompStat(fp, q))
+            if (!CompStat(fp, q))
                 return ERROR;
         else
 		{
-			elem = { ++indent0,line_num };
+			elem = { ++indent0,line_num } ;
 			printList.push(elem);
 			if (!Statement(fp, q))
                 return ERROR;
@@ -680,7 +680,9 @@ status Expr(FILE* fp, CTree& T, int endsym)//语法单位<表达式>子程序
 	node->nodes[0].data = (char*)malloc((strlen("#") + 1) * sizeof(char));
 	strcpy(node->nodes[0].data, "#");
 	node->nodes[0].FirstChild = nullptr;
-	InitStack(opn);  InitStack(op);  Push(op, node);		//初始化，将起止符#入栈
+	InitStack(opn);
+    InitStack(op);
+    Push(op, node);		//初始化，将起止符#入栈
 	while ((w != POUND || strcmp(node->nodes[0].data, "#")) && !error)  //当运算符栈栈顶不是起止符号，并没有错误时
 	{
 		if (w == IDENT || w == INT_CONST || w == UNSIGNED_CONST || w == LONG_CONST
