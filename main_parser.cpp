@@ -6,15 +6,14 @@ char tokenText0[100]; //储存第一个函数名或者变量名
 int indent0 = 0;  //初始化缩进值
 queue<print> printList; //用于方便打印缩进
 
-status program(FILE* fp, CTree& T)  //语法单位<程序>的子程序
+status Program(FILE* fp, CTree& T)  //语法单位<程序>的子程序
 {
 	CTree c;
 	struct print elem = { indent0,line_num };
 	printList.push(elem);//存入程序的缩进值
 	w = GetToken(fp);
-	if (!ExtDefList(fp, c))
+	if (!ExternalDefList(fp, c))
         return ERROR;  //调用外部定义序列函数
-
 	T.n = 1; T.r = 0;
 	T.nodes[0].data = (char*)malloc((strlen("程序") + 1) * sizeof(char)); //定义语法树的根结点nodes[0]
 	strcpy(T.nodes[0].data, "程序");
@@ -25,7 +24,7 @@ status program(FILE* fp, CTree& T)  //语法单位<程序>的子程序
 }
 
 
-status ExtDefList(FILE* fp, CTree& T) //语法单位<外部定义序列>的子程序
+status ExternalDefList(FILE* fp, CTree& T) //语法单位<外部定义序列>的子程序
 {
 	CTree c; 
 	status flag;//查看是否建立第二棵子树
@@ -36,10 +35,10 @@ status ExtDefList(FILE* fp, CTree& T) //语法单位<外部定义序列>的子程序
 	strcpy(T.nodes[0].data, "外部定义序列");
 	T.nodes[0].indent = 0;
 	T.nodes[0].FirstChild = nullptr;
-	if (!ExtDef(fp, c))
+	if (!ExternalDef(fp, c))
         return ERROR;
 	InsertChild(T, T.r, 1, c); //处理一个外部定义，得到一棵子树，作为根的第一棵子树
-	flag = ExtDefList(fp, c);
+	flag = ExternalDefList(fp, c);
 	if (flag == OK)
         InsertChild(T, T.r, 2, c); //得到的子树，作为根的第二棵子树
 	if (flag==ERROR)
@@ -48,7 +47,7 @@ status ExtDefList(FILE* fp, CTree& T) //语法单位<外部定义序列>的子程序
 }
 
 
-status ExtDef(FILE* fp, CTree& T)  //语法单位<外部定义>的子程序
+status ExternalDef(FILE* fp, CTree& T)  //语法单位<外部定义>的子程序
 {
 	status flag;
 	if (w != INT && w != LONG && w != SHORT && w != SIGNED && w != UNSIGNED &&w != FLOAT && w != DOUBLE && w != CHAR &&w!=VOID)
@@ -60,16 +59,16 @@ status ExtDef(FILE* fp, CTree& T)  //语法单位<外部定义>的子程序
 	strcpy(tokenText0, token_text);		//保存第一个变量名或函数名到tokenText0
 	w = GetToken(fp);
 	if (w != LS)
-        flag = ExtVarDef(fp, T);	//调用外部变量定义子程序
+        flag = ExternalVariableDef(fp, T);	//调用外部变量定义子程序
 	else
         flag = Function(fp, T);			//调用函数定义子程序
-	if (!flag)
+    if (!flag)
         return ERROR;
 	return OK;
 }
 
 
-status ExtVarDef(FILE* fp, CTree& T)  //语法单位<外部变量定义>子程序
+status ExternalVariableDef(FILE* fp, CTree& T)  //语法单位<外部变量定义>子程序
 {
 	CTree c; CTree p;
 	T.n = 1; T.r = 0;
@@ -85,7 +84,7 @@ status ExtVarDef(FILE* fp, CTree& T)  //语法单位<外部变量定义>子程序
 	c.nodes[0].FirstChild = nullptr;
 	if (!InsertChild(T, T.r, 1, c)) //c作为T的第一个孩子
         return ERROR;
-	if (!VarList(fp, p))
+	if (!VariableList(fp, p))
         return ERROR;
 	if (!InsertChild(T, T.r, 2, p)) //p作为T的第二个孩子
         return ERROR;
@@ -93,7 +92,7 @@ status ExtVarDef(FILE* fp, CTree& T)  //语法单位<外部变量定义>子程序
 }
 
 
-status VarList(FILE* fp, CTree& T)  //语法单位<变量序列>子程序
+status VariableList(FILE* fp, CTree& T)  //语法单位<变量序列>子程序
 {
 	CTree c; CTree t; //c树用来构建此变量结点，t树用来构建可能存在的下一变量结点
 	T.n = 1; T.r = 0;//生成变量序列结点
@@ -147,7 +146,7 @@ status VarList(FILE* fp, CTree& T)  //语法单位<变量序列>子程序
         return ERROR;	//如果w不是标识符则报错，反之后面还有第二个变量
 	strcpy(tokenText0, token_text);
 	w = GetToken(fp);
-	if (!VarList(fp, t))
+	if (!VariableList(fp, t))
         return ERROR;
 	if (!InsertChild(T, T.r, 2, t))
         return ERROR;
@@ -188,11 +187,11 @@ status Function(FILE* fp, CTree& T)  //语法单位<函数定义>子程序
 			w = GetToken(fp);
 			if (w != RS)
                 return ERROR;
-		}
+        }
 	}
 	else
 	{
-		if (!ParameList(fp, q))
+		if (!ParameterList(fp, q))
             return ERROR;
 		if (!InsertChild(p, p.r, 1, q))
             return ERROR;
@@ -209,7 +208,7 @@ status Function(FILE* fp, CTree& T)  //语法单位<函数定义>子程序
 	f.nodes[0].FirstChild = nullptr;
 	if (w == LL)  //存在函数体则判断复合语句
 	{
-		if (!CompStat(fp, s))
+		if (!ComplexStat(fp, s))
             return ERROR;
 		if (!InsertChild(f, f.r, 1, s))
             return ERROR;
@@ -220,7 +219,7 @@ status Function(FILE* fp, CTree& T)  //语法单位<函数定义>子程序
 }
 
 
-status ParameList(FILE* fp, CTree& T)  //语法单位<形参序列>子程序
+status ParameterList(FILE* fp, CTree& T)  //语法单位<形参序列>子程序
 {
 	CTree c; //c用于生成形参子树
 	CTree p; //p用于生成可能出现的下一个形参序列
@@ -229,7 +228,7 @@ status ParameList(FILE* fp, CTree& T)  //语法单位<形参序列>子程序
 	strcpy(T.nodes[0].data, "形参序列");
 	T.nodes[0].indent = 0;
 	T.nodes[0].FirstChild = nullptr;
-	if (!FormParDef(fp, c))
+	if (!FormParameterDef(fp, c))
         return ERROR;
 	if (!InsertChild(T, T.r, 1, c))
         return ERROR;
@@ -239,7 +238,7 @@ status ParameList(FILE* fp, CTree& T)  //语法单位<形参序列>子程序
 	if (w == COMMA)
 	{
 		w = GetToken(fp);
-		if (!ParameList(fp, p))
+		if (!ParameterList(fp, p))
             return ERROR;
 		InsertChild(T, T.r, 2, p);
 	}
@@ -247,7 +246,7 @@ status ParameList(FILE* fp, CTree& T)  //语法单位<形参序列>子程序
 }
 
 
-status FormParDef(FILE* fp, CTree& T)  //语法单位<形参>子程序
+status FormParameterDef(FILE* fp, CTree& T)  //语法单位<形参>子程序
 {
 //w此前已读取第一个形参类型
 	CTree c; //用于生成形参类型结点
@@ -280,7 +279,7 @@ status FormParDef(FILE* fp, CTree& T)  //语法单位<形参>子程序
 }
 
 
-status CompStat(FILE* fp, CTree& T)  //语法单位<复合语句>子程序
+status ComplexStat(FILE* fp, CTree& T)  //语法单位<复合语句>子程序
 {
 	CTree c; CTree p; //c用于生成局部变量定义子树，p用于生成语句序列子树
 	status flag;
@@ -295,11 +294,11 @@ status CompStat(FILE* fp, CTree& T)  //语法单位<复合语句>子程序
 	printList.push(elem);  //添加缩进值
 	if (w == INT || w == LONG || w == SHORT || w == SIGNED || w == UNSIGNED|| w == FLOAT || w == DOUBLE || w == CHAR)
 	{
-		if (!LocVarList(fp, c))
+		if (!LocalVariableList(fp, c))
             return ERROR;
 		if (!InsertChild(T, T.r, 1, c))
             return ERROR;
-		flag = StatList(fp, p);
+		flag = StatementList(fp, p);
 		if (!flag)
             return ERROR;
 		if (flag == OK)
@@ -308,7 +307,7 @@ status CompStat(FILE* fp, CTree& T)  //语法单位<复合语句>子程序
 	}
 	else
 	{
-		flag = StatList(fp, p);
+		flag = StatementList(fp, p);
 		if (!flag)
             return ERROR;
 		if (flag == OK && !InsertChild(T, T.r, 1, p))
@@ -322,7 +321,7 @@ status CompStat(FILE* fp, CTree& T)  //语法单位<复合语句>子程序
 	return OK;
 }
 
-status LocVarList(FILE* fp, CTree& T)  //语法单位<局部变量定义序列>子程序
+status LocalVariableList(FILE* fp, CTree& T)  //语法单位<局部变量定义序列>子程序
 {
 	CTree c; CTree p;//c生成局部变量定义子树，p生成可能存在的下一个局部变量定义序列子树
 	status flag;
@@ -334,11 +333,11 @@ status LocVarList(FILE* fp, CTree& T)  //语法单位<局部变量定义序列>子程序
 	strcpy(T.nodes[0].data, "局部变量定义序列");
 	T.nodes[0].indent = 0;
 	T.nodes[0].FirstChild = NULL;
-	if (!LocVarDef(fp, c))
+	if (!LocalVariableDef(fp, c))
         return ERROR;
 	if (!InsertChild(T, T.r, 1, c))
         return ERROR;
-	flag = LocVarList(fp, p);
+	flag = LocalVariableList(fp, p);
 	if (flag == OK)
         InsertChild(T, T.r, 2, p);
 	if (!flag)
@@ -346,7 +345,7 @@ status LocVarList(FILE* fp, CTree& T)  //语法单位<局部变量定义序列>子程序
 	return OK;
 }
 
-status LocVarDef(FILE* fp, CTree& T)//语法单位<局部变量定义>子程序
+status LocalVariableDef(FILE* fp, CTree& T)//语法单位<局部变量定义>子程序
 {
 	CTree c;  CTree p; //c生成局部变量类型结点,p生成变量序列子树
 	if (w != INT && w != LONG && w != SHORT && w != SIGNED && w != UNSIGNED && w != FLOAT && w != DOUBLE && w != CHAR)
@@ -370,14 +369,14 @@ status LocVarDef(FILE* fp, CTree& T)//语法单位<局部变量定义>子程序
         return ERROR;
 	strcpy(tokenText0, token_text);
 	w = GetToken(fp);
-	if (!VarList(fp, p))
+	if (!VariableList(fp, p))
         return ERROR;
 	if (!InsertChild(T, T.r, 2, p))
         return ERROR;
 	return OK;
 }
 
-status StatList(FILE* fp, CTree& T)  //语法单位<语句序列>子程序
+status StatementList(FILE* fp, CTree& T)  //语法单位<语句序列>子程序
 {
 	CTree c; CTree p;  //c生成语句树,p生成可能出现的语句序列树
 	status flag;
@@ -394,7 +393,7 @@ status StatList(FILE* fp, CTree& T)  //语法单位<语句序列>子程序
 		T.nodes[0].indent = 0;
 		T.nodes[0].FirstChild = nullptr;
 		InsertChild(T, T.r, 1, c);
-		flag = StatList(fp, p);
+		flag = StatementList(fp, p);
 		if (!flag)
             return ERROR;
 		if (flag == OK && !InsertChild(T, T.r, 2, p))
@@ -405,7 +404,7 @@ status StatList(FILE* fp, CTree& T)  //语法单位<语句序列>子程序
 
 status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 {
-	CTree c; CTree p; CTree q; CTree k; 
+	CTree c; CTree p; CTree q; CTree k; //！！！！！
 	print elem{};
 	
 	if (w == IF) //分析条件语句,p用于生成表达式树,q用于生成if模块子句数，k用于生成else模块子句数
@@ -416,7 +415,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		w = GetToken(fp);
 		if (w == RS)
             return ERROR;
-		if (!Expr(fp, p, RS))//括号内没有表达式
+		if (!Expression(fp, p, RS))//括号内没有表达式
             return ERROR;
 		c.n = 1; c.r = 0;  //生成if语句子树
 		c.nodes[0].data = (char*)malloc((strlen("条件：") + 1) * sizeof(char));
@@ -426,7 +425,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		InsertChild(c, c.r, 1, p);
 		w = GetToken(fp);
 		if (w == LL)
-            if (!CompStat(fp, q))
+            if (!ComplexStat(fp, q))
                 return ERROR;
         else
 		{
@@ -443,11 +442,13 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		p.nodes[0].indent = 1;
 		p.nodes[0].FirstChild = nullptr;
 		InsertChild(p, p.r, 1, q);
+//        w = GetToken(fp);
 		if (w == ELSE)
 		{
+            printf("else\n");
 			w = GetToken(fp);
 			if (w == LL)
-				if (!CompStat(fp, k))
+				if (!ComplexStat(fp, k))
                     return ERROR;
 			else
 			{
@@ -487,7 +488,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 	}
 	else if (w == LL)
     {
-		if (!CompStat(fp, T))
+		if (!ComplexStat(fp, T))
             return ERROR;
 		return OK;
 	}
@@ -526,22 +527,22 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		if (w != LS)
             return ERROR;
 		w = GetToken(fp);
-		if (!Expr(fp, c, SEMI))
+		if (!Expression(fp, c, SEMI))
             return ERROR;
 		InsertChild(T, T.nodes[0].FirstChild->child, 1, c);
 		w = GetToken(fp);
 		if (w == SEMI)
             return ERROR;
-		if (!Expr(fp, c, SEMI))
+		if (!Expression(fp, c, SEMI))
             return ERROR;
 		InsertChild(T, T.nodes[0].FirstChild->next->child, 1, c);
 		w = GetToken(fp);
-		if (!Expr(fp, c, RS))
+		if (!Expression(fp, c, RS))
             return ERROR;
 		InsertChild(T, T.nodes[0].FirstChild->next->next->child, 1, c);
 		w = GetToken(fp);
 		if (w == LL)
-			if (!CompStat(fp, c))
+			if (!ComplexStat(fp, c))
                 return ERROR;
 
 		else
@@ -564,11 +565,11 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		w = GetToken(fp);
 		if (w == RS)
             return ERROR;
-		if (!Expr(fp, c, RS))
+		if (!Expression(fp, c, RS))
             return ERROR;
 		w = GetToken(fp);
 		if (w == LL)
-			if (!CompStat(fp, p))
+			if (!ComplexStat(fp, p))
                 return ERROR;
 
 		else
@@ -625,7 +626,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		w = GetToken(fp);
 		if (w == SEMI)
             return ERROR;
-		if (!Expr(fp, c, SEMI))
+		if (!Expression(fp, c, SEMI))
             return ERROR;
 		w = GetToken(fp);
 		InsertChild(T, T.r, 1, c);
@@ -633,13 +634,13 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 	}
 	else if (w == LS)
     {
-		if (!Expr(fp, T, RS))
+		if (!Expression(fp, T, RS))
             return ERROR;
 		w = GetToken(fp);
 		return OK;
 	}
 	else if (w == IDENT || w == INT_CONST || w == UNSIGNED_CONST || w == LONG_CONST || w == UNSIGNED_LONG_CONST || w == DOUBLE_CONST || w == FLOAT_CONST || w == LONG_DOUBLE_CONST || w == CHAR_CONST) {
-		if (!Expr(fp, T, SEMI))
+		if (!Expression(fp, T, SEMI))
             return ERROR;
 		w = GetToken(fp);
 		return OK;
@@ -662,7 +663,7 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 
 }
 
-status Expr(FILE* fp, CTree& T, int endsym)//语法单位<表达式>子程序
+status Expression(FILE* fp, CTree& T, int endsym)//语法单位<表达式>子程序
 {
 	//已经读入了第一个单词在w中
 	SqStack op;		//运算符栈
@@ -707,7 +708,7 @@ status Expr(FILE* fp, CTree& T, int endsym)//语法单位<表达式>子程序
 			GetTop(op, node);
 			if (w == POUND)
                 strcpy(token_text, "#");
-			switch (precede(node->nodes[0].data, token_text))
+			switch (Precedence(node->nodes[0].data, token_text))
 			{
 			case '<':
 				node = (CTree*)malloc(sizeof(CTree));
@@ -757,11 +758,11 @@ status Expr(FILE* fp, CTree& T, int endsym)//语法单位<表达式>子程序
 	return OK;
 }
 
-char precede(char* a, char* b)
+char Precedence(char* a, char* b)
 {
 	int i, j;		//指示运算符对应的编号
 	//定义一个二维数组，用于存放优先级
-	char precede[13][13] =
+	char Precedence[13][13] =
 	{   //				 +		 -		 *		 /		 %		（		 ）	  	 =		>和<	  ==和!=		 #		&&		||
 		/* + */			'>',	'>',	'<',	'<',	'<',	'<',	'>',	'?',	'>',		'>',		'>',	'>',	'>',
 		/* - */			'>',	'>',	'<',	'<',	'<',	'<',	'>',	'?',	'>',		'>',		'>',	'>',	'>',
@@ -891,7 +892,7 @@ char precede(char* a, char* b)
 	default:
 		return '?';
 	}
-	return precede[i][j];
+	return Precedence[i][j];
 }
 
 status PrintTree(char* data, int indent) //打印函数

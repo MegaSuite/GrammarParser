@@ -60,7 +60,6 @@ ChooseFile://选择文件标志
 
                 mid_fp = fopen("C_mid_file.txt", "r");
                 line_num = 1;  //行数初始化为1
-//                system("cls");
                 printf("\n");
                 printf("\t单词类别\t\t\t\t单词值\n");
                 printf("\t---------------------------------------------\n");
@@ -180,7 +179,6 @@ ChooseFile://选择文件标志
                             break;
                         }
                         default:
-//                            continue;
                             break;
                     }
                 }
@@ -188,7 +186,6 @@ ChooseFile://选择文件标志
                 printf("\n");
                 printf("\t     --------错误列表--------\n");
                 printf("\t\t  错误总数:  %d\n", error_line_num - 1);
-//                printf("%d",error_line[10]);
                 if (error_line_num > 1)
                 {
                     printf("\n");
@@ -219,8 +216,7 @@ ChooseFile://选择文件标志
                 }
                 mid_fp = fopen("C_mid_file.txt", "r");
                 line_num = 1;  //行数初始化为1
-//                system("cls");
-                if (!program(mid_fp, T))
+                if (!Program(mid_fp, T))
                 {
                     printf("发生生成错误！错误行号：%d\n", line_num);
                     printf("按任意键继续...\n");
@@ -248,7 +244,7 @@ ChooseFile://选择文件标志
                 line_num = 1;
                 mid_fp = fopen("C_mid_file.txt", "r");
 
-                if (!program(mid_fp, T))
+                if (!Program(mid_fp, T))
                 {
                     printf("程序存在语法错误！无法缩进打印！\n");
                     break;
