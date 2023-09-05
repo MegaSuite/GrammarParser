@@ -6,10 +6,8 @@
 #include"structure_define.h"
 using namespace std;
 
-
 #define OK 1
 #define ERROR 0
-//#define INFEASIBLE -1
 
 struct print
 {
@@ -37,6 +35,6 @@ status LocalVariableList(FILE* fp, CTree& T);//语法单位<局部变量定义序列>子程序
 status LocalVariableDef(FILE* fp, CTree& T);//语法单位<局部变量定义>子程序
 status StatementList(FILE* fp, CTree& T);//语法单位<语句序列>子程序
 status Statement(FILE* fp, CTree& T);//语法单位<语句>子程序
-status Expression(FILE* fp, CTree& T, int endsym);//语法单位<表达式>子程序
-char Precedence(char* a, char* b);//比较a与b的优先级
+status Expression(FILE* fp, CTree& T, int EndSym);//语法单位<表达式>子程序
+char Precedence(const char* a, const char* b);//比较a与b的优先级
 status PrintTree(char* data, int indent); //打印缩进

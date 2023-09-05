@@ -12,15 +12,15 @@ int main()
 	CTree T;
 	FILE* fp,*mid_fp;
 
-	extern define_data data_Def[10];//用于储存define宏定义的内容
-	extern int data_Def_num;
+	extern DefineStruct DefineDef[10];//用于储存define宏定义的内容
+	extern int MacroNum;
 	extern int line_num;
 	extern char token_text[100];
 
 	int error_line[100];//记录错误行数
 	int error_line_num=0;//记录错误总个数
 
-ChooseFile://选择文件标志
+    ChooseFile://选择文件标志
     printf("请输入文件名：\n→" );
     scanf("%s", filename);
 	if (!(fp = fopen(filename, "r")))
@@ -49,7 +49,7 @@ ChooseFile://选择文件标志
                     break;
                 }
                 printf("....正在预编译文件....\n");
-                if (pre_process(fp))
+                if (Process(fp))
                     printf("预编译成功！按任意键继续...\n");
 
                 else
@@ -68,9 +68,8 @@ ChooseFile://选择文件标志
                 {
                     w = GetToken(mid_fp);
                     if (w >= AUTO && w <= DEFINE)
-                    {
                         printf("	关键字					%s\n", token_text);
-                    }
+
                     switch (w)
                     {
                         case POUND:
@@ -184,10 +183,11 @@ ChooseFile://选择文件标志
                 }
 
                 printf("\n");
-                printf("\t     --------错误列表--------\n");
-                printf("\t\t  错误总数:  %d\n", error_line_num - 1);
+
                 if (error_line_num > 1)
                 {
+                    printf("\t     --------错误列表--------\n");
+                    printf("\t\t  错误总数:  %d\n", error_line_num - 1);
                     printf("\n");
                     printf("\t\t  序号	  行数\n");
                     for (int i = 0; i < error_line_num - 1; i++)
@@ -206,7 +206,7 @@ ChooseFile://选择文件标志
                 printf(".....正在预编译文件.....\n");
                 line_num = 1;  //行数初始化为1
                 fp = fopen(filename, "r");
-                if (pre_process(fp))
+                if (Process(fp))
                     printf("预编译成功！\n");
 
                 else
@@ -235,7 +235,7 @@ ChooseFile://选择文件标志
                 line_num = 1;  //行数初始化为1
                 fp = fopen(filename, "r");
 
-                if (!pre_process(fp))   //预编译
+                if (!Process(fp))   //预编译
                 {
                     printf("预编译失败！退出系统！请检查错误！\n");
                     return 0;

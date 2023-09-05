@@ -332,7 +332,7 @@ status LocalVariableList(FILE* fp, CTree& T)  //语法单位<局部变量定义序列>子程序
 	T.nodes[0].data = (char*)malloc((strlen("局部变量定义序列") + 1) * sizeof(char));
 	strcpy(T.nodes[0].data, "局部变量定义序列");
 	T.nodes[0].indent = 0;
-	T.nodes[0].FirstChild = NULL;
+	T.nodes[0].FirstChild = nullptr;
 	if (!LocalVariableDef(fp, c))
         return ERROR;
 	if (!InsertChild(T, T.r, 1, c))
@@ -663,14 +663,14 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 
 }
 
-status Expression(FILE* fp, CTree& T, int endsym)//语法单位<表达式>子程序
+status Expression(FILE* fp, CTree& T, int EndSym)//语法单位<表达式>子程序
 {
 	//已经读入了第一个单词在w中
 	SqStack op;		//运算符栈
 	SqStack opn;	//操作数栈
-	CTree* node = (CTree*)malloc(sizeof(CTree));
-	CTree* child1 = (CTree*)malloc(sizeof(CTree));
-	CTree* child2 = (CTree*)malloc(sizeof(CTree));
+	auto* node = (CTree*)malloc(sizeof(CTree));
+	auto* child1 = (CTree*)malloc(sizeof(CTree));
+	auto* child2 = (CTree*)malloc(sizeof(CTree));
 	T.n = 1; T.r = 0;  //生成表达式结点
 	T.nodes[0].data = (char*)malloc((strlen("表达式语句：") + 1) * sizeof(char));
 	strcpy(T.nodes[0].data, "表达式语句：");
@@ -684,7 +684,7 @@ status Expression(FILE* fp, CTree& T, int endsym)//语法单位<表达式>子程序
 	InitStack(opn);
     InitStack(op);
     Push(op, node);		//初始化，将起止符#入栈
-	while ((w != POUND || strcmp(node->nodes[0].data, "#")) && !error)  //当运算符栈栈顶不是起止符号，并没有错误时
+	while ((w != POUND || strcmp(node->nodes[0].data, "#") != 0) && !error)  //当运算符栈栈顶不是起止符号，并没有错误时
 	{
 		if (w == IDENT || w == INT_CONST || w == UNSIGNED_CONST || w == LONG_CONST
 			|| w == UNSIGNED_LONG_CONST || w == DOUBLE_CONST || w == FLOAT_CONST
@@ -710,42 +710,42 @@ status Expression(FILE* fp, CTree& T, int endsym)//语法单位<表达式>子程序
                 strcpy(token_text, "#");
 			switch (Precedence(node->nodes[0].data, token_text))
 			{
-			case '<':
-				node = (CTree*)malloc(sizeof(CTree));
-				node->nodes[0].data = (char*)malloc((strlen(token_text) + 1) * sizeof(char));
-				strcpy(node->nodes[0].data, token_text);
-				node->nodes[0].indent = 1;
-				node->nodes[0].FirstChild = nullptr;
-				node->n = 1; node->r = 0;
-				Push(op, node);		//根据w生成一个结点，结点指针进栈opn
-				w = GetToken(fp);
-				break;
-			case '=':
-				if (!Pop(op, node))
-                    error++;
-				w = GetToken(fp);
-				break;   //去括号
-			case '>':
-				if (!Pop(opn, child2))
-                    error++;
-				if (!Pop(opn, child1))
-                    error++;
-				if (!Pop(op, node))
-                    error++;
-				//根据运算符栈退栈得到的运算符node和操作数的结点指针child1和child2，
-				//完成建立生成一个运算符的结点，结点指针进栈opn
-				InsertChild(*node, node->r, 1, *child1);
-				InsertChild(*node, node->r, 2, *child2);
-				Push(opn, node);
-				break;
-			default:
-				if (w == endsym)
-                    w = POUND; //遇到结束标记），w被替换成#
-				else
-                    error++;
+                case '<':
+                    node = (CTree*)malloc(sizeof(CTree));
+                    node->nodes[0].data = (char*)malloc((strlen(token_text) + 1) * sizeof(char));
+                    strcpy(node->nodes[0].data, token_text);
+                    node->nodes[0].indent = 1;
+                    node->nodes[0].FirstChild = nullptr;
+                    node->n = 1; node->r = 0;
+                    Push(op, node);		//根据w生成一个结点，结点指针进栈opn
+                    w = GetToken(fp);
+                    break;
+                case '=':
+                    if (!Pop(op, node))
+                        error++;
+                    w = GetToken(fp);
+                    break;   //去括号
+                case '>':
+                    if (!Pop(opn, child2))
+                        error++;
+                    if (!Pop(opn, child1))
+                        error++;
+                    if (!Pop(op, node))
+                        error++;
+                    //根据运算符栈退栈得到的运算符node和操作数的结点指针child1和child2，
+                    //完成建立生成一个运算符的结点，结点指针进栈opn
+                    InsertChild(*node, node->r, 1, *child1);
+                    InsertChild(*node, node->r, 2, *child2);
+                    Push(opn, node);
+                    break;
+                default:
+                    if (w == EndSym)
+                        w = POUND; //遇到结束标记），w被替换成#
+                    else
+                        error++;
 			}
 		}
-		else if (w == endsym)
+		else if (w == EndSym)
             w = POUND;//遇到结束标记分号，w被替换成#
 		else
             error = 1;
@@ -758,7 +758,7 @@ status Expression(FILE* fp, CTree& T, int endsym)//语法单位<表达式>子程序
 	return OK;
 }
 
-char Precedence(char* a, char* b)
+char Precedence(const char* a, const char* b)
 {
 	int i, j;		//指示运算符对应的编号
 	//定义一个二维数组，用于存放优先级
@@ -780,117 +780,117 @@ char Precedence(char* a, char* b)
 	};
 	switch (a[0])
 	{
-	case '+':
-		i = 0;
-        break;
-	case '-':
-		i = 1;
-        break;
-	case '*':
-		i = 2;
-        break;
-	case '/':
-		i = 3;
-        break;
-	case '%':
-		i = 4;
-        break;
-	case '(':
-		i = 5;
-        break;
-	case ')':
-		i = 6;
-        break;
-	case '=':
-		if (a[1] == '=')
-            i = 9;
-		else
-            i = 7;
-		break;
-	case '>':
-	case '<':
-		i = 8;
-        break;
-	case '!':
-		if (a[1] == '=')
-            i = 9;
-		else
+        case '+':
+            i = 0;
+            break;
+        case '-':
+            i = 1;
+            break;
+        case '*':
+            i = 2;
+            break;
+        case '/':
+            i = 3;
+            break;
+        case '%':
+            i = 4;
+            break;
+        case '(':
+            i = 5;
+            break;
+        case ')':
+            i = 6;
+            break;
+        case '=':
+            if (a[1] == '=')
+                i = 9;
+            else
+                i = 7;
+            break;
+        case '>':
+        case '<':
+            i = 8;
+            break;
+        case '!':
+            if (a[1] == '=')
+                i = 9;
+            else
+                return '?';
+            break;
+        case '#':
+            i = 10;
+            break;
+        case '&':
+            if (a[1] == '&')
+                i = 11;
+            else
+                return '?';
+            break;
+        case '|':
+            if (a[1] == '|')
+                i = 12;
+            else
+                return '?';
+            break;
+        default:
             return '?';
-		break;
-	case '#':
-		i = 10;
-		break;
-	case '&':
-		if (a[1] == '&')
-            i = 11;
-		else
+        }
+        switch (b[0])
+        {
+        case '+':
+            j = 0;
+            break;
+        case '-':
+            j = 1;
+            break;
+        case '*':
+            j = 2;
+            break;
+        case '/':
+            j = 3;
+            break;
+        case '%':
+            j = 4;
+            break;
+        case '(':
+            j = 5;
+            break;
+        case ')':
+            j = 6;
+            break;
+        case '=':
+            if (b[1] == '=')
+                j = 9;
+            else
+                j = 7;
+            break;
+        case '>':
+        case '<':
+            j = 8;
+            break;
+        case '!':
+            if (b[1] == '=')
+                j = 9;
+            else
+                return '?';
+            break;
+        case '#':
+            j = 10;
+            break;
+        case '&':
+            if (b[1] == '&')
+                j = 11;
+            else
+                return '?';
+            break;
+        case '|':
+            if (b[1] == '|')
+                j = 12;
+            else
+                return '?';
+            break;
+        default:
             return '?';
-		break;
-	case '|':
-		if (a[1] == '|')
-            i = 12;
-		else
-            return '?';
-		break;
-	default:
-		return '?';
-	}
-	switch (b[0])
-	{
-	case '+':
-		j = 0;
-        break;
-	case '-':
-		j = 1;
-        break;
-	case '*':
-		j = 2;
-        break;
-	case '/':
-		j = 3;
-        break;
-	case '%':
-		j = 4;
-        break;
-	case '(':
-		j = 5;
-        break;
-	case ')':
-		j = 6;
-        break;
-	case '=':
-		if (b[1] == '=')
-            j = 9;
-		else
-            j = 7;
-		break;
-	case '>':
-	case '<':
-		j = 8;
-        break;
-	case '!':
-		if (b[1] == '=')
-            j = 9;
-		else
-            return '?';
-		break;
-	case '#':
-		j = 10;
-		break;
-	case '&':
-		if (b[1] == '&')
-            j = 11;
-		else
-            return '?';
-		break;
-	case '|':
-		if (b[1] == '|')
-            j = 12;
-		else
-            return '?';
-		break;
-	default:
-		return '?';
 	}
 	return Precedence[i][j];
 }

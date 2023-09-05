@@ -10,17 +10,17 @@ typedef int status;
 #define ERROR 0
 
 //储存define宏定义数据
-typedef struct define_data {
+typedef struct DefineStruct {
 	char ident[50];
 	char string[50];
-}define_data;
+}DefineStruct;
 
 //储存include头文件定义数据
-typedef struct include_data {
+typedef struct IncludeStruct {
 	char string[50];
-}include_data;
+}IncludeStruct;
 
-extern define_data data_Def[10];//用于储存define宏定义的内容
-extern include_data data_Include[10];//用于储存include文件包含的内容
-extern int data_Def_num;
-status pre_process(FILE* fp);
+extern DefineStruct DefineDef[10];//用于储存define宏定义的内容
+extern IncludeStruct IncludeDef[10];//用于储存include文件包含的内容
+extern int MacroNum;
+status Process(FILE* fp);

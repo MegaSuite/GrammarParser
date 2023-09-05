@@ -1,8 +1,7 @@
-#include <stdio.h"
-#include stdlib.h
+#include <stdio.h>
+#include "stdlib.h"
 #define OK
 //注释
-/*注释
 char a;
 int fuc(int a){
 i=a+1;
