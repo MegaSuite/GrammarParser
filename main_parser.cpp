@@ -898,7 +898,7 @@ char Precedence(char* a, char* b)
 status PrintTree(char* data, int indent) //´òÓ¡º¯Êı
 {
 	int i;
-	for (i = 0; i < indent; i++)
+	for (i = 0; i < indent-1; i++)
 		printf("\t");
 	printf("%s\n", data);
 	return OK;

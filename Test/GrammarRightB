@@ -5,15 +5,9 @@ int group[30];
 a=a+(b-c)*(b%f)/c;
 if(a>b)
 a=1;
-//
 while(a<1){
 b=b+1;
 }
-c = 'a';
-c = '\t';
-c = '\'';
-c = '\\';
-return b;
 }
 
 
