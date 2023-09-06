@@ -8,12 +8,12 @@ status PrintFile(FILE* fp)
 
 	FILE* print_fp;
 
-	char filename[30] = "C_print_file.txt";
+	char filename[30] = "C_OUT.txt";//输出文件名
 	print_fp = fopen(filename, "w");
 
 	while (!printList.empty())
 	{
-		IndentNum = printList.front().indent;
+		IndentNum = printList.front().indent;//缩进个数
 		printList.pop();
 		while (!printList.empty() && line == printList.front().line_num)//如果是同一行
                 printList.pop();

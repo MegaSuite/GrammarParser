@@ -10,8 +10,14 @@ using namespace std;
 #define OK 1
 #define ERROR 0
 #define INFEASIBLE (-1)
+
 typedef int status; //函数返回值类型
 
+/*储存错误值及错误发生处的结构体*/
+typedef struct {
+    int LNum;
+    char token[100];
+}ErrorSave;
 
 /*树形结构的所属说明：*/
 typedef struct Child		//孩子结点

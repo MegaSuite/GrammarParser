@@ -1,4 +1,4 @@
-int b[30];
+int b[30];！
 double c;
 char string_S1;
 double func(int a, int b)

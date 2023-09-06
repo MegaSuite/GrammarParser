@@ -3,6 +3,8 @@
 #include<cstdio>
 #include<cstdlib>
 #include<cstring>
+#include<iostream>
+
 
 enum TOKENS{AUTO,BREAK,CASE,CHAR,CONST,CONTINUE,DEFAULT,DO,
 DOUBLE,ELSE,ENUM,EXTERN,FLOAT,FOR,GOTO,IF,
@@ -19,6 +21,7 @@ LL,RL,LM,RM,LS,RS, //括号（large,medium,small）
 LINENOTE,BLOCKNOTE,SEMI,COMMA,ERROR_TOKEN,POUND  //其他单词,其中SEMI为分号，COMMA为逗号,POUND为井号,ERROR_TOKEN标识错误
 
 };
+
 
 //处理关键字的结构体
 typedef struct keyword {

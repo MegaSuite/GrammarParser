@@ -1,6 +1,7 @@
 #include"structure_define.h"
 #include<cmath>
 
+
 /*树的相关函数*/
 status InitTree(CTree& T) //初始化树
 {
@@ -8,7 +9,9 @@ status InitTree(CTree& T) //初始化树
 	return OK;
 }
 
-status InsertChild(CTree& T, int p, int i, CTree c) //插入孩子,在p结点处插入孩子子树c，i表示第i棵子树
+
+//插入孩子,在p结点处插入孩子子树c，i表示第i棵子树
+status InsertChild(CTree& T, int p, int i, CTree c)
 {
 	if (p < 0 || p >= T.n)
         return ERROR;
@@ -76,6 +79,8 @@ status InsertChild(CTree& T, int p, int i, CTree c) //插入孩子,在p结点处插入孩子
 	return OK;
 }
 
+
+//求孩子结点的双亲结点
 status GetParent(CTree T, int child, int& parent)
 {
 	CNode t; int i = 0;
@@ -97,6 +102,8 @@ status GetParent(CTree T, int child, int& parent)
 	return INFEASIBLE;
 }
 
+
+//求树的深度
 status TraverseTree(CTree T, status(*visit)(char*, int))
 {
 	stack<int> stack;
@@ -196,7 +203,9 @@ status InitStack(SqStack& S)//构造一个空栈S
 	return OK;
 }
 
-status GetTop(SqStack S, SElemType& e)//若栈不空，则用e返回S的栈顶元素，并返回OK；否则返回ERROR
+
+//若栈不空，则用e返回S的栈顶元素，并返回OK；否则返回ERROR
+status GetTop(SqStack S, SElemType& e)
 {
 	if (S.top == S.base)
         return ERROR;
@@ -204,7 +213,9 @@ status GetTop(SqStack S, SElemType& e)//若栈不空，则用e返回S的栈顶元素，并返回OK
 	return OK;
 }
 
-status Push(SqStack& S, SElemType e)//插入元素e为新的栈顶元素
+
+//插入元素e为新的栈顶元素
+status Push(SqStack& S, SElemType e)
 {
 	if (S.top - S.base >= S.StackSize)//栈满，追加存储空间
 	{
@@ -218,7 +229,9 @@ status Push(SqStack& S, SElemType e)//插入元素e为新的栈顶元素
 	return OK;
 }
 
-status Pop(SqStack& S, SElemType& e)//若栈不空，则删除S的栈顶元素，用e返回其值，并返回OK
+
+//若栈不空，则删除S的栈顶元素，用e返回其值，并返回OK；否则返回ERROR
+status Pop(SqStack& S, SElemType& e)
 {
 	if (S.top == S.base)
         return ERROR;

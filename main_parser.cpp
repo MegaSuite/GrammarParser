@@ -51,11 +51,18 @@ status ExternalDef(FILE* fp, CTree& T)  //语法单位<外部定义>的子程序
 {
 	status flag;
 	if (w != INT && w != LONG && w != SHORT && w != SIGNED && w != UNSIGNED &&w != FLOAT && w != DOUBLE && w != CHAR &&w!=VOID)
+    {
+        printf("外部定义错误\n");
         return ERROR;
+    }
 	strcpy(kind, token_text);			//保存类型关键字
 	w = GetToken(fp);
 	if (w != IDENT)
+    {
+        printf("外部变量命名错误\n");
         return ERROR;
+    }
+//        return ERROR;
 	strcpy(tokenText0, token_text);		//保存第一个变量名或函数名到tokenText0
 	w = GetToken(fp);
 	if (w != LS)
@@ -118,10 +125,18 @@ status VariableList(FILE* fp, CTree& T)  //语法单位<变量序列>子程序
 				w = GetToken(fp);
 			}
 			else
+            {
+                printf("数组定义错误，缺少']'\n");
                 return ERROR;
+            }
+//                return ERROR;
 		}
 		else
+        {
+            printf("数组定义错误，缺少数组大小\n");
             return ERROR;
+        }
+//            return ERROR;
 	}
 	else
 	{
@@ -135,7 +150,11 @@ status VariableList(FILE* fp, CTree& T)  //语法单位<变量序列>子程序
 	if (!InsertChild(T, T.r, 1, c))	//识别的变量结点作为T的第一个孩子
         return ERROR;
 	if (w != COMMA && w != SEMI)
+    {
+        printf("变量定义错误，缺少','或';'\n");
         return ERROR;
+    }
+//        return ERROR;
 	if (w == SEMI)//如果标识符后是分号，直接结束
 	{
 		w = GetToken(fp);
@@ -173,7 +192,11 @@ status Function(FILE* fp, CTree& T)  //语法单位<函数定义>子程序
         return ERROR;
 	w = GetToken(fp);//函数括号内可能无参数，可能是void，可能是参数序列，其他情况报错
 	if (w != RS && w != VOID && w != INT && w != LONG && w != SHORT && w != SIGNED && w != UNSIGNED && w != FLOAT && w != DOUBLE && w != CHAR)
-		return ERROR;
+    {
+        printf("函数定义错误，参数序列错误！\n");
+        return ERROR;
+    }
+//		return ERROR;
 	p.n = 1; p.r = 0;		//生成函数名结点
 	p.nodes[0].data = (char*)malloc((strlen(tokenText0) + strlen("函数名：") + 1) * sizeof(char));
 	strcpy(p.nodes[0].data, "函数名：");
@@ -186,7 +209,11 @@ status Function(FILE* fp, CTree& T)  //语法单位<函数定义>子程序
 		{
 			w = GetToken(fp);
 			if (w != RS)
+            {
+                printf("函数定义错误，返回值与变量不匹配！\n");
                 return ERROR;
+            }
+//                return ERROR;
         }
 	}
 	else
@@ -200,7 +227,11 @@ status Function(FILE* fp, CTree& T)  //语法单位<函数定义>子程序
         return ERROR;
 	w = GetToken(fp);
 	if (w != SEMI && w != LL)
+    {
+        printf("函数定义错误，缺少';'或'{'\n");
         return ERROR;
+    }
+//        return ERROR;
 	f.n = 1; f.r = 0;  //生成函数体结点
 	f.nodes[0].data = (char*)malloc((strlen("函数体：") + 1) * sizeof(char));
 	strcpy(f.nodes[0].data, "函数体：");
@@ -234,7 +265,11 @@ status ParameterList(FILE* fp, CTree& T)  //语法单位<形参序列>子程序
         return ERROR;
 	w = GetToken(fp);
 	if (w != RS && w != COMMA)
+    {
+        printf("形参序列错误，形参定义未闭合，缺少')'或','\n");
         return ERROR;
+    }
+//        return ERROR;
 	if (w == COMMA)
 	{
 		w = GetToken(fp);
@@ -257,7 +292,11 @@ status FormParameterDef(FILE* fp, CTree& T)  //语法单位<形参>子程序
 	T.nodes[0].indent = 1;
 	T.nodes[0].FirstChild = nullptr;
 	if (w != INT && w != LONG && w != SHORT && w != SIGNED && w != UNSIGNED &&w != FLOAT && w != DOUBLE && w != CHAR)
+    {
+        printf("形参定义错误，类型说明符错误\n");
         return ERROR;
+    }
+//        return ERROR;
 	c.n = 1; c.r = 0;		//生成形参类型结点
 	c.nodes[0].data = (char*)malloc((strlen(token_text) + strlen("类型：") + 1) * sizeof(char));
 	strcpy(c.nodes[0].data, "类型：");
@@ -267,7 +306,11 @@ status FormParameterDef(FILE* fp, CTree& T)  //语法单位<形参>子程序
 	InsertChild(T, T.r, 1, c);
 	w = GetToken(fp);
 	if (w != IDENT)
+    {
+        printf("形参命名错误\n");
         return ERROR;
+    }
+//        return ERROR;
 	p.n = 1; p.r = 0;   //生成形参变量结点
 	p.nodes[0].data = (char*)malloc((strlen(token_text) + strlen("ID: ") + 1) * sizeof(char));
 	strcpy(p.nodes[0].data, "ID: ");
@@ -315,8 +358,15 @@ status ComplexStat(FILE* fp, CTree& T)  //语法单位<复合语句>子程序
 	}
 	elem = { --indent0,line_num };
 	printList.push(elem);
+
+//    w = GetToken(fp);
+
 	if (w != RL)
+    {
+        printf("复合语句错误，缺少'}'\n");
         return ERROR;
+    }
+//        return ERROR;
 	w = GetToken(fp);
 	return OK;
 }
@@ -349,7 +399,11 @@ status LocalVariableDef(FILE* fp, CTree& T)//语法单位<局部变量定义>子程序
 {
 	CTree c;  CTree p; //c生成局部变量类型结点,p生成变量序列子树
 	if (w != INT && w != LONG && w != SHORT && w != SIGNED && w != UNSIGNED && w != FLOAT && w != DOUBLE && w != CHAR)
+    {
+        printf("局部变量定义错误\n");
         return ERROR;
+    }
+//        return ERROR;
 	T.n = 1; T.r = 0;		//生成局部变量定义结点
 	T.nodes[0].data = (char*)malloc((strlen("局部变量定义：") + 1) * sizeof(char));
 	strcpy(T.nodes[0].data, "局部变量定义：");
@@ -365,8 +419,11 @@ status LocalVariableDef(FILE* fp, CTree& T)//语法单位<局部变量定义>子程序
 	if (!InsertChild(T, T.r, 1, c))
         return ERROR;
 	w = GetToken(fp);
-	if (w != IDENT)
+	if (w != IDENT){
+        printf("局部变量命名错误\n");
         return ERROR;
+    }
+//        return ERROR;
 	strcpy(tokenText0, token_text);
 	w = GetToken(fp);
 	if (!VariableList(fp, p))
@@ -404,18 +461,26 @@ status StatementList(FILE* fp, CTree& T)  //语法单位<语句序列>子程序
 
 status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 {
-	CTree c; CTree p; CTree q; CTree k; //！！！！！
+	CTree c; CTree p; CTree q; CTree k;
 	print elem{};
 	
 	if (w == IF) //分析条件语句,p用于生成表达式树,q用于生成if模块子句数，k用于生成else模块子句数
     {
 		w = GetToken(fp);
 		if (w != LS)
+        {
+            printf("if语句错误,'('缺失！\n");
             return ERROR;
+        }
+//            return ERROR;
 		w = GetToken(fp);
 		if (w == RS)
+        {
+            printf("if语句错误,条件缺失！\n");
             return ERROR;
-		if (!Expression(fp, p, RS))//括号内没有表达式
+        }
+//            return ERROR;
+		if (!Expression(fp, p, RS))
             return ERROR;
 		c.n = 1; c.r = 0;  //生成if语句子树
 		c.nodes[0].data = (char*)malloc((strlen("条件：") + 1) * sizeof(char));
@@ -442,7 +507,6 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		p.nodes[0].indent = 1;
 		p.nodes[0].FirstChild = nullptr;
 		InsertChild(p, p.r, 1, q);
-//        w = GetToken(fp);
 		if (w == ELSE)
 		{
             printf("else\n");
@@ -599,7 +663,11 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		T.nodes[0].FirstChild = nullptr;
 		w = GetToken(fp);
 		if (w != SEMI)
+        {
+            printf("continue语句错误，缺少';'\n");
             return ERROR;
+        }
+//            return ERROR;
 		w = GetToken(fp);
 		return OK;
 	}
@@ -612,7 +680,11 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		T.nodes[0].FirstChild = nullptr;
 		w = GetToken(fp);
 		if (w != SEMI)
+        {
+            printf("break语句错误，缺少';'\n");
             return ERROR;
+        }
+//            return ERROR;
 		w = GetToken(fp);
 		return OK;
 	}
@@ -625,7 +697,11 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		T.nodes[0].FirstChild = nullptr;
 		w = GetToken(fp);
 		if (w == SEMI)
+        {
+            printf("return语句错误，缺少表达式\n");
             return ERROR;
+        }
+//            return ERROR;
 		if (!Expression(fp, c, SEMI))
             return ERROR;
 		w = GetToken(fp);
@@ -659,7 +735,11 @@ status Statement(FILE* fp, CTree& T)  //语法单位<语句>子程序
 		return OK;
 	}
 	else
+    {
+        printf("语句错误，缺少尾部元素！\n");
         return ERROR;
+    }
+//        return ERROR;
 
 }
 
@@ -752,7 +832,11 @@ status Expression(FILE* fp, CTree& T, int EndSym)//语法单位<表达式>子程序
 		GetTop(op, node);
 	}
 	if (error)
+    {
+        printf("表达式错误\n");
         return ERROR;
+    }
+//        return ERROR;
 	GetTop(opn, node);
 	InsertChild(T, T.r, 1, *node);
 	return OK;

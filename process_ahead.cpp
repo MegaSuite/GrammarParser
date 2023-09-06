@@ -5,6 +5,12 @@ DefineStruct DefineDef[10];//用于储存define宏定义的内容，全局
 IncludeStruct IncludeDef[10];//用于储存include文件包含的内容，全局
 int MacroNum;//宏定义个数
 
+
+/*预编译函数,本次实验的主题函数之二，
+ * 对文件开头的宏定义和自定义头文件进行预编译，
+ * 判断是否有错误
+ * 并把除宏定义之外的语句写入C_TEMP.txt,
+ * 供Program使用*/
 status Process(FILE* fp)
 {
 	int w; //接收GetToken得到的元素
@@ -16,30 +22,30 @@ status Process(FILE* fp)
 	FILE* mid_fp;
 	char filename[50];
 
-	strcpy(filename, "C_mid_file.txt"); //中间文件
+	strcpy(filename, "C_TEMP.txt"); //中间文件
 	mid_fp = fopen(filename, "w");
 	w = GetToken(fp);
 
 	do {
 		if (w == POUND)//检测到#号，进入程序
         {
-			w = GetToken(fp);
+			w = GetToken(fp);//获取#号后的单词，【#define】or【#include】
 			if (w == DEFINE)
             {
 				w = GetToken(fp);
 				a = line_num;
 
-				if (w == ERROR_TOKEN)
+				if (w == ERROR_TOKEN)//检测到错误标识
                 {
                     printf("ERROR: line %d:错误标识!\n", line_num);
                     return ERROR;
                 }
-                else if(w == SEMI)
+                else if(w == SEMI)//检测到分号
                 {
                     printf("ERROR: line %d:错误定义，检测到';'！\n", line_num);
                     return ERROR;
                 }
-                else if (w == POUND)
+                else if (w == POUND)//检测到尾部#
                 {
                     printf("ERROR: line %d:定义错误,检测到尾部'#'!\n", line_num);
                     return ERROR;
@@ -47,20 +53,20 @@ status Process(FILE* fp)
 				else
 					strcpy(DefineDef[i].ident, token_text);
 
-				w = GetToken(fp);
+				w = GetToken(fp);//获取宏定义的内容
 				b = line_num;
 
-                if (w == ERROR_TOKEN)
+                if (w == ERROR_TOKEN)//检测到错误标识
                 {
                     printf("ERROR: line %d:错误标识!\n", line_num);
                     return ERROR;
                 }
-                else if(w == SEMI)
+                else if(w == SEMI)//检测到分号
                 {
                     printf("ERROR: line %d:错误定义，检测到';'！\n", line_num);
                     return ERROR;
                 }
-                else if (w == POUND)
+                else if (w == POUND)//检测到尾部#
                 {
                     printf("ERROR: line %d:定义错误,检测到尾部'#'!\n", line_num);
                     return ERROR;
@@ -68,7 +74,7 @@ status Process(FILE* fp)
                 else
                 	strcpy(DefineDef[i++].string, token_text);
 
-				if (a != b)
+				if (a != b)//检测到宏定义未完成
                 {
                     printf("ERROR: line %d:检测到宏定义未完成!\n", line_num-1);
                     return ERROR;
@@ -76,7 +82,7 @@ status Process(FILE* fp)
 
                 MacroNum = i;//宏定义个数
 				fprintf(mid_fp, "\n");
-				w = GetToken(fp);
+				w = GetToken(fp);//获取下一个单词
 				pre_line_num = line_num;
 				continue;
 			}
@@ -91,9 +97,9 @@ status Process(FILE* fp)
 				else if(w== STRING_CONST)//检测自定义头文件  #include "xxx.h"
                 {
 					strcpy(IncludeDef[j++].string, token_text);
-					if ((container = fgetc(fp)) != ';')
+					if ((container = fgetc(fp)) != ';')//检测到句尾不是';'
                     {
-                        ungetc(container, fp);
+                        ungetc(container, fp);//将读取到的字符放回缓冲区
                         fprintf(mid_fp, "\n");
                         w = GetToken(fp);
                         pre_line_num = line_num;
@@ -138,7 +144,7 @@ status Process(FILE* fp)
                         }
 						else
                         {
-                            printf("ERROR: line %d:宏定义错误!\n", line_num);
+                            printf("ERROR: line %d:宏定义错误,检测到错误符号!\n", line_num);
                             return ERROR;
                         }
 					}

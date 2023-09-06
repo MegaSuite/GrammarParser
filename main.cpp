@@ -17,7 +17,7 @@ int main()
 	extern int line_num;
 	extern char token_text[100];
 
-	int error_line[100];//记录错误行数
+    ErrorSave error_line[100];//记录错误行数
 	int error_line_num=0;//记录错误总个数
 
     ChooseFile://选择文件标志
@@ -58,7 +58,7 @@ int main()
                     return 0;
                 }
 
-                mid_fp = fopen("C_mid_file.txt", "r");
+                mid_fp = fopen("C_TEMP.txt", "r");
                 line_num = 1;  //行数初始化为1
                 printf("\n");
                 printf("\t单词类别\t\t\t\t单词值\n");
@@ -173,7 +173,8 @@ int main()
                             break;
                         case ERROR_TOKEN:
                         {
-                            error_line[error_line_num] = line_num;
+                            error_line[error_line_num].LNum = line_num;
+                            strcpy(error_line[error_line_num].token, token_text);
                             error_line_num++;
                             break;
                         }
@@ -186,12 +187,12 @@ int main()
 
                 if (error_line_num > 1)
                 {
-                    printf("\t     --------错误列表--------\n");
-                    printf("\t\t  错误总数:  %d\n", error_line_num - 1);
+                    printf("\t---------------------------------------------\n");
+                    printf("\t\t\t错误总数:  [%d]\n", error_line_num - 1);
                     printf("\n");
-                    printf("\t\t  序号	  行数\n");
+                    printf("\t\t| 序号  |  行数  |  错误出现于\n");
                     for (int i = 0; i < error_line_num - 1; i++)
-                        printf("\t\t     %d       %d\n", i+1, error_line[i+1]);//从1开始，避免0号位0的输出
+                        printf("\t\t|    %d  |    %d  |   [%s]\n", i+1, error_line[i+1].LNum,error_line[i+1].token);//从1开始，避免0号位0的输出
 
                 }
                 fclose(fp);
@@ -214,7 +215,7 @@ int main()
                     printf("预编译失败！退出系统！请检查错误！\n");
                     return 0;
                 }
-                mid_fp = fopen("C_mid_file.txt", "r");
+                mid_fp = fopen("C_TEMP.txt", "r");
                 line_num = 1;  //行数初始化为1
                 if (!Program(mid_fp, T))
                 {
@@ -242,10 +243,11 @@ int main()
                 }
 
                 line_num = 1;
-                mid_fp = fopen("C_mid_file.txt", "r");
+                mid_fp = fopen("C_TEMP.txt", "r");
 
                 if (!Program(mid_fp, T))
                 {
+                    printf("发生生成错误！错误行号：%d\n", line_num);
                     printf("程序存在语法错误！无法缩进打印！\n");
                     break;
                 }

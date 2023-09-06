@@ -1,4 +1,4 @@
-int a,
+int a;
 int func(a ,int b){
 a=a+b;
 return a;

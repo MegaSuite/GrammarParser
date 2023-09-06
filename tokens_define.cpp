@@ -11,13 +11,25 @@ keyword n[IDENT] = {
 	{"include",INCLUDE},{"define",DEFINE}
 };//定义键值对
 
+//int is_zh_ch(char p)
+//{
+//
+//    if((p>>8) != 1)
+//    {
+//        return 1;
+//    }
+//
+//    return 0;
+//}
 
+//进行字符获取的函数，是本次实验的主要函数，通过对字符的判断，返回对应的token值
 int GetToken(FILE* fp)
 {
 	char c; //用于暂存读取的单个字符
 	int i=0; //token_text下标变量
 	int j=0; //用于与关键字做比对
-	
+
+
 	while (( c = fgetc(fp)) == ' ' || c == '\n'|| c == '\t'||c==EOF)  //跳过空白符和制表符
 	{
 		if (c == '\n')
@@ -27,7 +39,12 @@ int GetToken(FILE* fp)
             return EOF;
 	}
 
-	//判断标识符或者关键字
+//    if(is_zh_ch(c))
+//    {
+//        printf("检测到非英文字符，请检查！\n");
+//        return ERROR_TOKEN;
+//    }
+    //判断标识符或者关键字
     if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
     {
 		do {
@@ -193,6 +210,7 @@ int GetToken(FILE* fp)
             stationERROR:
 			ungetc(c, fp);
 			token_text[i] = '\0';
+
 			return ERROR_TOKEN;
 		}
 
@@ -602,8 +620,10 @@ int GetToken(FILE* fp)
                         } while (c != '\'' && c != '\n'&& c!=EOF); //添加智能识别功能，防止无限报错【亮点】
 
                         if (c == '\'')
-                            return ERROR_TOKEN;
+                        {
 
+                            return ERROR_TOKEN;
+                        }
                         else
                             goto stationERROR;
                     }
@@ -613,7 +633,10 @@ int GetToken(FILE* fp)
             {
                 c = fgetc(fp);
                 if (c == '\'')
+                {
+
                     return ERROR_TOKEN;
+                }
 
                 else
                     goto stationERROR;
@@ -638,7 +661,11 @@ int GetToken(FILE* fp)
                     } while (c != '\'' && c != '\n' && c != EOF); //添加智能识别功能，防止无限报错【亮点】
 
                     if (c == '\'')
+                    {
+
                         return ERROR_TOKEN;
+                    }
+
 
                     else
                         goto stationERROR;
@@ -688,7 +715,11 @@ int GetToken(FILE* fp)
                     } while (c != '"' && c != '\n' && c != EOF);
 
                     if (c == '"')
+                    {
+
                         return ERROR_TOKEN;
+                    }
+
 
                     else
                         goto stationERROR;
@@ -705,6 +736,7 @@ int GetToken(FILE* fp)
                 return EOF;
             else
                 return ERROR_TOKEN;
+//                return ERROR_TOKEN;
 
     }
 
