@@ -1,0 +1,8 @@
+# ninja log v5
+1	477	7158492807181239	CMakeFiles/GrammarParser.dir/main.cpp.obj	941cf800a2c72201
+15	401	7158493098067692	CMakeFiles/GrammarParser.dir/process_ahead.cpp.obj	c2400def0cfd7009
+13	403	7158493098081067	CMakeFiles/GrammarParser.dir/tokens_define.cpp.obj	7daf3f302542b9ad
+11	394	7158493097983527	CMakeFiles/GrammarParser.dir/structure_define.cpp.obj	deb7eeba6fb78463
+9	459	7158493098645417	CMakeFiles/GrammarParser.dir/file_writer.cpp.obj	93b245fe9fc3a190
+6	558	7158493099627586	CMakeFiles/GrammarParser.dir/main_parser.cpp.obj	7c147abc22e087b8
+559	786	7158493101874544	GrammarParser.exe	157e716807999fdd
