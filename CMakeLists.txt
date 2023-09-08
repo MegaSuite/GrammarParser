@@ -8,4 +8,6 @@ add_executable(GrammarParser main.cpp
         main_parser.cpp
         process_ahead.cpp
         structure_define.cpp
-        tokens_define.cpp)
+        tokens_define.cpp
+        Test/MacroRight
+        Test/MacroWrong)

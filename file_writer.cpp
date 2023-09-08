@@ -2,37 +2,37 @@
 
 status PrintFile(FILE* fp) 
 {
-	int IndentNum=0, line = 1;//IndentNumä¸ºç¼©è¿›ä¸ªæ•°ï¼Œlineä¸ºè¡Œæ•°
-	int i;//å¾ªç¯å˜é‡
-    char c;//ç”¨äºè¯»å–æ–‡ä»¶
+	int IndentNum=0, line = 1;//IndentNumÎªËõ½ø¸öÊı£¬lineÎªĞĞÊı
+	int i;//Ñ­»·±äÁ¿
+    char c;//ÓÃÓÚ¶ÁÈ¡ÎÄ¼ş
 
 	FILE* print_fp;
 
-	char filename[30] = "C_OUT.txt";//è¾“å‡ºæ–‡ä»¶å
+	char filename[30] = "C_OUT.txt";//Êä³öÎÄ¼şÃû
 	print_fp = fopen(filename, "w");
 
 	while (!printList.empty())
 	{
-		IndentNum = printList.front().indent;//ç¼©è¿›ä¸ªæ•°
+		IndentNum = printList.front().indent;//Ëõ½ø¸öÊı
 		printList.pop();
-		while (!printList.empty() && line == printList.front().line_num)//å¦‚æœæ˜¯åŒä¸€è¡Œ
+		while (!printList.empty() && line == printList.front().line_num)//Èç¹ûÊÇÍ¬Ò»ĞĞ
                 printList.pop();
 
-		while (!printList.empty() && line < printList.front().line_num)//å¦‚æœæ˜¯ä¸‹ä¸€è¡Œ
+		while (!printList.empty() && line < printList.front().line_num)//Èç¹ûÊÇÏÂÒ»ĞĞ
 		{
-			for (i = 0; i < IndentNum; i++)//ç¼©è¿›
+			for (i = 0; i < IndentNum; i++)//Ëõ½ø
 				fputc('\t', print_fp);
 
-			while ((c = fgetc(fp)) != '\n')//å°†è¯¥è¡Œå†…å®¹å†™å…¥æ–‡ä»¶
+			while ((c = fgetc(fp)) != '\n')//½«¸ÃĞĞÄÚÈİĞ´ÈëÎÄ¼ş
 				fputc(c, print_fp);
 
-			fputc(c, print_fp);//å°†æ¢è¡Œç¬¦å†™å…¥æ–‡ä»¶
+			fputc(c, print_fp);//½«»»ĞĞ·ûĞ´ÈëÎÄ¼ş
 			line++;
 		}
 	}
-	while ((c = fgetc(fp)) != EOF)//å°†å‰©ä½™å†…å®¹å†™å…¥æ–‡ä»¶
+	while ((c = fgetc(fp)) != EOF)//½«Ê£ÓàÄÚÈİĞ´ÈëÎÄ¼ş
 		fputc(c, print_fp);
 
-	fclose(print_fp);//å…³é—­æ–‡ä»¶
+	fclose(print_fp);//¹Ø±ÕÎÄ¼ş
 	return OK;
 }

@@ -9,37 +9,37 @@ int ch = 1;
 
 int main()
 {
-	CTree T;
-	FILE* fp,*mid_fp;
+    CTree T;
+    FILE* fp,*mid_fp;
 
-	extern DefineStruct DefineDef[10];//用于储存define宏定义的内容
-	extern int MacroNum;
-	extern int line_num;
-	extern char token_text[100];
+    extern DefineStruct DefineDef[10];//用于储存define宏定义的内容
+    extern int MacroNum;
+    extern int line_num;
+    extern char token_text[100];
 
     ErrorSave error_line[100];//记录错误行数
-	int error_line_num=0;//记录错误总个数
+    int error_line_num=0;//记录错误总个数
 
     ChooseFile://选择文件标志
     printf("请输入文件名：\n→" );
     scanf("%s", filename);
-	if (!(fp = fopen(filename, "r")))
-	{
-		printf("...选择文件错误，请重新选择...\n");
-		goto ChooseFile;
-	}
-	else
+    if (!(fp = fopen(filename, "r")))
+    {
+        printf("...选择文件错误，请重新选择...\n");
+        goto ChooseFile;
+    }
+    else
         fclose(fp);
 
-	while (ch)
-	{
-		printf("---基于高级语言源程序格式处理工具菜单---\n");
+    while (ch)
+    {
+        printf("---基于高级语言源程序格式处理工具菜单---\n");
         printf("\t1. 词法分析\n\t2. 语法分析\n\t3. 缩进编排\n\t4. 选择文件\n\t0. 退出程序\n");
         printf("---请选择：\n→");
-		scanf("%d", &ch);
+        scanf("%d", &ch);
 
-		switch (ch)
-		{
+        switch (ch)
+        {
             case 1:
                 error_line_num = 1;
                 line_num = 1;  //行数初始化为1
@@ -271,8 +271,8 @@ int main()
 
             default:
                 return 0;
-		}
-	}
-	return 1;
+        }
+    }
+    return 1;
 
 }
