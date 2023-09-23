@@ -1,0 +1,139 @@
+<mxfile host="Electron" modified="2023-09-23T05:47:11.353Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.7.5 Chrome/114.0.5735.289 Electron/25.8.1 Safari/537.36" etag="ANZoGtz5yLGabdsg8Mf6" version="21.7.5" type="device">
+  <diagram name="第 1 页" id="-eZpe6gZMZ9TTy93zGsI">
+    <mxGraphModel dx="868" dy="461" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="wN_nionsLqiSPdsANRqJ-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-2" target="wN_nionsLqiSPdsANRqJ-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-2" value="开始" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;" vertex="1" parent="1">
+          <mxGeometry x="410" y="70" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-3" target="wN_nionsLqiSPdsANRqJ-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-3" value="输入文件名称" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="405" y="140" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-6" target="wN_nionsLqiSPdsANRqJ-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-6" target="wN_nionsLqiSPdsANRqJ-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-6" target="wN_nionsLqiSPdsANRqJ-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-6" target="wN_nionsLqiSPdsANRqJ-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-6" target="wN_nionsLqiSPdsANRqJ-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-6" target="wN_nionsLqiSPdsANRqJ-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-24" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-6" target="wN_nionsLqiSPdsANRqJ-23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-6" value="输入操作代码" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="405" y="210" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-26" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-8" target="wN_nionsLqiSPdsANRqJ-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-8" value="1、词法分析" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="320" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-10" target="wN_nionsLqiSPdsANRqJ-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-10" value="2.语法分析" style="rounded=0;whiteSpace=wrap;html=1;direction=west;" vertex="1" parent="1">
+          <mxGeometry x="380" y="320" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-36" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-18" target="wN_nionsLqiSPdsANRqJ-35">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-18" value="3、缩进编排" style="rounded=0;whiteSpace=wrap;html=1;direction=west;" vertex="1" parent="1">
+          <mxGeometry x="520" y="320" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-46" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-21" target="wN_nionsLqiSPdsANRqJ-45">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-21" value="4、选择文件" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="320" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-23" value="0、退出系统" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="590" y="210" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-28" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-25" target="wN_nionsLqiSPdsANRqJ-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-25" value="预编译处理" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="400" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-27">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="300.3333333333335" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-27" value="词法分析" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="480" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-32" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-29" target="wN_nionsLqiSPdsANRqJ-31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-29" value="预编译处理" style="rounded=0;whiteSpace=wrap;html=1;direction=west;" vertex="1" parent="1">
+          <mxGeometry x="380" y="400" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-34" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-31" target="wN_nionsLqiSPdsANRqJ-33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-31" value="生成抽象语法树" style="rounded=0;whiteSpace=wrap;html=1;direction=west;" vertex="1" parent="1">
+          <mxGeometry x="380" y="480" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-33">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="440.3333333333335" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-33" value="遍历抽象语法树" style="rounded=0;whiteSpace=wrap;html=1;direction=west;" vertex="1" parent="1">
+          <mxGeometry x="380" y="560" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-42" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-35" target="wN_nionsLqiSPdsANRqJ-41">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-35" value="预编译处理" style="rounded=0;whiteSpace=wrap;html=1;direction=west;" vertex="1" parent="1">
+          <mxGeometry x="520" y="400" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-44" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-41" target="wN_nionsLqiSPdsANRqJ-43">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-41" value="生成抽象语法树" style="rounded=0;whiteSpace=wrap;html=1;direction=west;" vertex="1" parent="1">
+          <mxGeometry x="520" y="480" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-48" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-43">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="580.3333333333335" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-43" value="缩进编排" style="rounded=0;whiteSpace=wrap;html=1;direction=west;" vertex="1" parent="1">
+          <mxGeometry x="520" y="560" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="wN_nionsLqiSPdsANRqJ-45" target="wN_nionsLqiSPdsANRqJ-6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="720" y="640" />
+              <mxPoint x="210" y="640" />
+              <mxPoint x="210" y="230" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wN_nionsLqiSPdsANRqJ-45" value="输入文件名称" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="400" width="120" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
